@@ -128,6 +128,15 @@ class DICM_CTA_Child extends ET_Builder_Module {
 		);
 	}
 
+	function get_html_with_js() {
+		$description_test = $this->props['title'];
+		wp_register_script( 'test-child-register', plugins_url('/divi-extension-example-master/test-child.js'));
+		wp_enqueue_script( 'test-child-divi-module', plugins_url('/divi-extension-example-master/test-child.js'), array('test-child-register'));
+		wp_localize_script( 'test-child-divi-module', 'testChildSettings', array('test-string' => $description_test,));
+		wp_print_scripts( 'test-child-divi-module');
+		return $description_test;
+	}
+
 	/**
 	 * Render module output
 	 *

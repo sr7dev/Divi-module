@@ -59,6 +59,15 @@ class DICM_CTA_Parent extends ET_Builder_Module {
 		);
 	}
 
+	function get_html_with_js() {
+		$description_test = $this->props['title'];
+		wp_register_script( 'test-register', plugins_url('/divi-extension-example-master/test.js'));
+		wp_enqueue_script( 'test-divi-module', plugins_url('/divi-extension-example-master/test.js'), array('test-register'));
+		wp_localize_script( 'test-divi-module', 'testSettings', array('test-string' => $description_test,));
+		wp_print_scripts( 'test-divi-module');
+		return $description_test;
+	}
+
 	/**
 	 * Render module output
 	 *
@@ -75,13 +84,18 @@ class DICM_CTA_Parent extends ET_Builder_Module {
 		$title = $this->props['title'];
 
 		// Render module content
+		// $output = sprintf(
+		// 	'<h2 class="dicm-title">%1$s</h2>
+		// 	<div class="dicm-content">%2$s</div>',
+		// 	esc_html( $title ),
+		// 	et_sanitized_previously( $this->content )
+		// );
 		$output = sprintf(
 			'<h2 class="dicm-title">%1$s</h2>
-			<div class="dicm-content">%2$s</div>',
-			esc_html( $title ),
-			et_sanitized_previously( $this->content )
+			<div class="dicm-content">%2$s</div>'
+			, $this->get_html_with_js()
+			, $this->content
 		);
-
 		// Render wrapper
 		// 3rd party module with no full VB support has to wrap its render output with $this->_render_module_wrapper().
 		// This method will automatically add module attributes and proper structure for parallax image/video background
