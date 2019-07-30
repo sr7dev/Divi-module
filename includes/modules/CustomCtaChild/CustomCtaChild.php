@@ -107,6 +107,8 @@ class DICM_CTA_Child extends ET_Builder_Module {
 		wp_enqueue_script( 'test-child-divi-module', plugins_url('/divi-extension-example-master/test-child.js'), array('test-child-register'));
 		wp_localize_script( 'test-child-divi-module', 'testChildSettings', array('test-string' => $description_test,));
 		wp_print_scripts( 'test-child-divi-module');
+
+		$html = '<img src=""></img>';
 		return $description_test;
 	}
 
