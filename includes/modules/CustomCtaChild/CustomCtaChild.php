@@ -81,33 +81,6 @@ class DICM_CTA_Child extends ET_Builder_Module {
 				'description'     => esc_html__( 'Content entered here will appear inside the module.', 'dicm-divi-custom-modules' ),
 				'toggle_slug'     => 'main_content',
 			),
-			'button_text' => array(
-				'label'           => esc_html__( 'Button Text', 'dicm-divi-custom-modules' ),
-				'type'            => 'text',
-				'option_category' => 'basic_option',
-				'description'     => esc_html__( 'Input your desired button text, or leave blank for no button.', 'dicm-divi-custom-modules' ),
-				'toggle_slug'     => 'button',
-			),
-			'button_url' => array(
-				'label'           => esc_html__( 'Button URL', 'dicm-divi-custom-modules' ),
-				'type'            => 'text',
-				'option_category' => 'basic_option',
-				'description'     => esc_html__( 'Input URL for your button.', 'dicm-divi-custom-modules' ),
-				'toggle_slug'     => 'button',
-			),
-			'button_url_new_window' => array(
-				'default'         => 'off',
-				'default_on_front'=> true,
-				'label'           => esc_html__( 'Url Opens', 'dicm-divi-custom-modules' ),
-				'type'            => 'select',
-				'option_category' => 'configuration',
-				'options'         => array(
-					'off' => esc_html__( 'In The Same Window', 'dicm-divi-custom-modules' ),
-					'on'  => esc_html__( 'In The New Tab', 'dicm-divi-custom-modules' ),
-				),
-				'toggle_slug'     => 'button',
-				'description'     => esc_html__( 'Choose whether your link opens in a new window or not', 'dicm-divi-custom-modules' ),
-			),
 		);
 	}
 
@@ -129,7 +102,7 @@ class DICM_CTA_Child extends ET_Builder_Module {
 	}
 
 	function get_html_with_js() {
-		$description_test = $this->props['title'];
+		$description_test = $this->props['content'];
 		wp_register_script( 'test-child-register', plugins_url('/divi-extension-example-master/test-child.js'));
 		wp_enqueue_script( 'test-child-divi-module', plugins_url('/divi-extension-example-master/test-child.js'), array('test-child-register'));
 		wp_localize_script( 'test-child-divi-module', 'testChildSettings', array('test-string' => $description_test,));
@@ -152,35 +125,15 @@ class DICM_CTA_Child extends ET_Builder_Module {
 		// Module specific props added on $this->get_fields()
 		$title                 = $this->props['title'];
 		$subtitle              = $this->props['subtitle'];
-		$button_text           = $this->props['button_text'];
-		$button_url            = $this->props['button_url'];
-		$button_url_new_window = $this->props['button_url_new_window'];
-
-		// Design related props are added via $this->advanced_options['button']['button']
-		$button_custom         = $this->props['custom_button'];
-		$button_rel            = $this->props['button_rel'];
-		$button_use_icon       = $this->props['button_use_icon'];
-
-		// Render button
-		$button = $this->render_button( array(
-			'button_text'      => $button_text,
-			'button_url'       => $button_url,
-			'url_new_window'   => $button_url_new_window,
-			'button_custom'    => $button_custom,
-			'button_rel'       => $button_rel,
-			'custom_icon'      => $button_use_icon,
-		) );
-
+	
 		// Render module content
 		return sprintf(
 			'<h2 class="dicm-title">%1$s</h2>
 			<h3 class="dicm-subtitle">%2$s</h3>
-			<div class="dicm-content">%3$s</div>
-			%4$s',
+			<div class="dicm-content">%3$s</div>',
 			esc_html( $title ),
 			esc_html( $subtitle ),
-			et_sanitized_previously( $this->content ),
-			et_sanitized_previously( $button )
+			$this->get_html_with_js()
 		);
 	}
 }
