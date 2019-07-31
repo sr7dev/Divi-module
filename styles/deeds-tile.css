@@ -1,3 +1,16 @@
+.section-label {
+  font-size: 28px;
+  height: 0px;
+}
+.section-label .content {
+  background:gray; 
+  height: 320px;
+  width: 38px;
+  text-align: center;
+  writing-mode: vertical-rl; 
+  text-orientation: mixed;
+  transform: scale(-1); 
+}
 .deeds-tiles
 {
   display:flex;

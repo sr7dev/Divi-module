@@ -117,7 +117,7 @@ class DICM_CTA_Child extends ET_Builder_Module {
 		$style_profile_img = 'deeds-tile-row-profile-img';
 
 
-		wp_enqueue_style( 'medrec-instantsearch', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
+		wp_enqueue_style( 'tile-style', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
 		wp_register_script( 'test-child-register', plugins_url('/divi-extension-example-master/test-child.js'));
 		wp_enqueue_script( 'test-child-divi-module', plugins_url('/divi-extension-example-master/test-child.js'), array('test-child-register'));
 		wp_localize_script( 'test-child-divi-module', 'testChildSettings', array('test-string' => $description_test,));
