@@ -102,14 +102,64 @@ class DICM_CTA_Child extends ET_Builder_Module {
 	}
 
 	function get_html_with_js() {
+		$title = $this->props['title'];
+		$subtitle = $this->props['subtitle'];
 		$description_test = $this->props['content'];
+		$profile_img_src = 'https://amdgjadcen.cloudimg.io/width/200/q35.foil1/https://www.deedsalone.com/wp-content/uploads/2018/12/Doug-post.png';
+		$sport_img_src = 'https://devdeeds.wpengine.com/wp-content/uploads/2019/04/kayaking-blue.svg';
+		$favor_img_src = 'https://devdeeds.wpengine.com/wp-content/uploads/2019/03/favorite-icon-empty.svg';
+		$style_tiles = 'deeds-tiles';
+		$style_tiles_pos = 'grid';
+		$style_tile = 'deeds-tile';
+		$style_tile_type = 'bottom-info';
+		$style_tile_size = 'fixed-height';
+		$style_desc_info = 'tile-desc-info';
+		$style_profile_img = 'deeds-tile-row-profile-img';
+
+
+		wp_enqueue_style( 'medrec-instantsearch', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
 		wp_register_script( 'test-child-register', plugins_url('/divi-extension-example-master/test-child.js'));
 		wp_enqueue_script( 'test-child-divi-module', plugins_url('/divi-extension-example-master/test-child.js'), array('test-child-register'));
 		wp_localize_script( 'test-child-divi-module', 'testChildSettings', array('test-string' => $description_test,));
 		wp_print_scripts( 'test-child-divi-module');
 
-		$html = '<img src=""></img>';
-		return $description_test;
+		$html = 
+		'<div class="' . $style_tiles . ' ' . $style_tiles_pos . '">
+			<div class="' . $style_tile . ' ' . $style_tile_type. ' ' . $style_tile_size . '">
+	        <div class="deeds-tile-desc">
+	            <div class="deeds-tile-row">
+	                <div class="deeds-tile-fav">
+	                    <button class="simplefavorite-button id_-1_26792-0">
+	                        <img class="favor_img unfavor" src="' .$favor_img_src . '" />
+	                    </button>
+	                </div>
+	                <div class="deeds-tile-maintitle">
+	                    <a href="#">
+	                        <span>' . $title . '</span>
+	                    </a>
+	                </div>
+	                <div class="tile-sport">
+	                    <a href="#">
+	                        <img src="' . $sport_img_src . '" alt="Kayaking">
+	                    </a>
+	                </div>
+	            </div>
+	            <div class="deeds-tile-row">
+	                <div class="' . $style_desc_info . '">
+	                    <a href="#">
+	                        <span>' . $subtitle . '</span>
+	                    </a>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="' . $style_profile_img . '">
+	            <a href="#" class="deeds-tile-row">
+	                <img id="Doguetebmx" src="' . $profile_img_src . '">
+	            </a>
+	        </div>
+	    </div>
+	    </div>';
+		return $html;
 	}
 
 	/**
@@ -130,11 +180,7 @@ class DICM_CTA_Child extends ET_Builder_Module {
 	
 		// Render module content
 		return sprintf(
-			'<h2 class="dicm-title">%1$s</h2>
-			<h3 class="dicm-subtitle">%2$s</h3>
-			<div class="dicm-content">%3$s</div>',
-			esc_html( $title ),
-			esc_html( $subtitle ),
+			'<div class="dicm-content">%1$s</div>',
 			$this->get_html_with_js()
 		);
 	}

@@ -1,0 +1,104 @@
+.deeds-tiles
+{
+  display:flex;
+  overflow: auto;
+  align-content: center;
+  margin-left:38px;
+}
+.deeds-tiles.grid
+{
+  flex-wrap: wrap;
+}
+.deeds-tile
+{
+  display:flex;
+  padding: 7px;
+  box-shadow: 0 0 10px rgba(54, 54, 54, 0.35);
+  margin: 0.5em;
+}
+
+.deeds-tile.bottom-info
+{
+  flex-direction:column-reverse;
+}
+.deeds-tile.top-info
+{
+   flex-direction:column;
+}
+.deeds-tile.fixed-height{
+  
+}
+.deeds-tile.fixed-width{
+  vertical-align: middle;
+}
+.deeds-tile.fixed-width-height{
+  object-fit: cover;
+}
+.deeds-tile-maintitle{
+  margin-left: 5px;
+  width: calc(100% - 10px) !important;
+}
+.deeds-tile-maintitle{
+  margin-left: 5px;
+  width: calc(100% - 10px) !important;
+}
+.deeds-tile.hide-sport .tile-sport
+{
+  display:none;
+}
+
+.deeds-tile.main-info .tile-desc-info
+{
+  display:none;
+}
+
+.deeds-tile.hide-sport .tile-sport
+{
+  display:none;
+}
+.deeds-tile-desc.extrainfo-pos-bottom .tile-desc-info,
+.deeds-tile-desc.extrainfo-pos-bottom .deeds-tile-maintitle
+{
+  width: 100%;
+  text-align: center;
+  margin-left: 0;
+}
+.tile-desc-info
+{
+  margin-left: 25px;
+}
+.deeds-tile-row
+{
+  display:flex;
+}
+.deeds-tile-desc.extrainfo-pos-bottom 
+{
+  display: flex;
+  flex-direction: column-reverse;
+}
+.deeds-tile-desc.extrainfo-pos-bottom  span{
+  
+}
+.deeds-tile-desc.extrainfo-pos-top 
+{
+  flex-direction: column;
+}
+button.simplefavorite-button
+{
+  padding:0px;
+  background:transparent;
+  border:none;
+}
+.deeds-tile-fav img{
+   width: 20px;
+}
+
+.tile-sport img
+{
+  width:25px;
+}
+.deeds-tile-row-profile-img
+{
+  padding:3px;
+  border: 1px solid #ccc;
+}
