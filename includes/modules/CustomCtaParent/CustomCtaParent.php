@@ -62,6 +62,8 @@ class DICM_CTA_Parent extends ET_Builder_Module {
 	function get_html_with_js() {
 		$title = $this->props['title'];
 		$style_section = 'section-label';
+		$style_tiles = 'deeds-tiles';
+		$style_tiles_pos = 'grid';
 		wp_enqueue_style( 'tile-styles', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
 		wp_register_script( 'test-register', plugins_url('/divi-extension-example-master/test.js'));
 		wp_enqueue_script( 'test-divi-module', plugins_url('/divi-extension-example-master/test.js'), array('test-register'));
@@ -71,7 +73,8 @@ class DICM_CTA_Parent extends ET_Builder_Module {
 		$html = '
 			<div class="' . $style_section . '">
     		<div class="content">' . $title . '</div>
-			</div>';
+			</div>
+			<div class="' . $style_tiles . ' ' . $style_tiles_pos . '">';
 		return $html;
 	}
 
@@ -98,8 +101,8 @@ class DICM_CTA_Parent extends ET_Builder_Module {
 		// 	et_sanitized_previously( $this->content )
 		// );
 		$output = sprintf(
-			'<div>%1$s</div>
-			<div class="dicm-content">%2$s</div>'
+			'<div>%1$s
+			%2$s</div></div>'
 			, $this->get_html_with_js()
 			, $this->content
 		);
