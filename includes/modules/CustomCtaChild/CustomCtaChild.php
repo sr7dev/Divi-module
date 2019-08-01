@@ -74,19 +74,20 @@ class DICM_CTA_Child extends ET_Builder_Module {
 				'description'     => esc_html__( 'Content entered here will appear inside the module.', 'dicm-divi-custom-modules' ),
 				'toggle_slug'     => 'main_content',
 			),
-			'styleTileInfo' => array(
-				'label'           => esc_html__( 'TileInfo', 'dicm-divi-custom-modules' ),
+			'styletileinfo' => array(
+				'label'           => esc_html__( 'Tile Info', 'dicm-divi-custom-modules' ),
 				'type'            => 'select',
 				'option_category' => 'layout',
 				'options'					=> array(
 					'top-info'		=> esc_html__( 'Top Info', 'dicm-divi-custom-modules' ),
 					'bottom-info'	=> esc_html__( 'Bottom Info', 'dicm-divi-custom-modules' ),
 				),
+				'default_on_front'=> 'top-info',
 				'description'     => esc_html__( 'Select info here will appear inside the module.', 'dicm-divi-custom-modules' ),
 				'toggle_slug'     => 'main_content',
 			),
-			'styleTileSize' => array(
-				'label'           => esc_html__( 'TileSize', 'dicm-divi-custom-modules' ),
+			'styletilesize' => array(
+				'label'           => esc_html__( 'Tile Size', 'dicm-divi-custom-modules' ),
 				'type'            => 'select',
 				'option_category' => 'layout',
 				'options'					=> array(
@@ -94,21 +95,36 @@ class DICM_CTA_Child extends ET_Builder_Module {
 					'fixed-width'			=> esc_html__( 'Fixed Width', 'dicm-divi-custom-modules' ),
 					'both'						=> esc_html__( 'Fixed Width & Height', 'dicm-divi-custom-modules' ),
 				),
+				'default_on_front'=> 'fixed-height',
 				'description'     => esc_html__( 'Select info here will appear inside the module.', 'dicm-divi-custom-modules' ),
 				'toggle_slug'     => 'main_content',
 			),
-			'styleDescriptionInfo' => array(
-				'label'           => esc_html__( 'DescriptionInfo', 'dicm-divi-custom-modules' ),
+			'styledescriptioninfo' => array(
+				'label'           => esc_html__( 'Description Info', 'dicm-divi-custom-modules' ),
 				'type'            => 'select',
 				'option_category' => 'layout',
 				'options'					=> array(
-					'main-info'						=> esc_html__( 'Main Info', 'dicm-divi-custom-modules' ),
-					'extra-top-info'			=> esc_html__( 'Extra Top Info', 'dicm-divi-custom-modules' ),
-					'extra-bottom-info'		=> esc_html__( 'Extra Bottom Info', 'dicm-divi-custom-modules' ),
+					''												=> esc_html__( 'None', 'dicm-divi-custom-modules' ),
+					'main-info'								=> esc_html__( 'Main Info', 'dicm-divi-custom-modules' ),
+					'extrainfo-pos-top'				=> esc_html__( 'Extra Top Info', 'dicm-divi-custom-modules' ),
+					'extrainfo-pos-bottom'		=> esc_html__( 'Extra Bottom Info', 'dicm-divi-custom-modules' ),
 				),
+				'default_on_front'=> '',
 				'description'     => esc_html__( 'Select info here will appear inside the module.', 'dicm-divi-custom-modules' ),
 				'toggle_slug'     => 'main_content',
 			),
+			'stylehidesport' => array(
+        'label'           => esc_html__( 'Hide Sport Icon', 'dicm-divi-custom-modules' ),
+        'type'            => 'yes_no_button',
+        'option_category' => 'basic_option',
+				'options'           => array(
+          'off' => esc_html__( 'No', 'dicm-divi-custom-modules' ),
+          'on'  => esc_html__( 'Yes', 'dicm-divi-custom-modules' ),
+        ),
+        'description'     => esc_html__( 'Select yes if you want to hide sport icon.', 'dicm-divi-custom-modules' ),
+        'toggle_slug'     => 'main_content',
+   	    'default'     => 'off',
+	   	),
 		);
 	}
 
@@ -135,12 +151,12 @@ class DICM_CTA_Child extends ET_Builder_Module {
 		$profile_img_src = 'https://amdgjadcen.cloudimg.io/width/200/q35.foil1/https://www.deedsalone.com/wp-content/uploads/2018/12/Doug-post.png';
 		$sport_img_src = 'https://devdeeds.wpengine.com/wp-content/uploads/2019/04/kayaking-blue.svg';
 		$favor_img_src = 'https://devdeeds.wpengine.com/wp-content/uploads/2019/03/favorite-icon-empty.svg';
-		$style_tile_type = $this->props['styleTileInfo'];
-		$style_tile_size = $this->props['styleTileSize'];
-		$style_desc_info = $this->props['styleDescriptionInfo'];
+		$style_tile_type = $this->props['styletileinfo'];
+		$style_tile_size = $this->props['styletilesize'];
+		$style_desc_info = $this->props['styledescriptioninfo'];
+		$hide_sport = $this->props['stylehidesport'];
 
-		
-
+		$style_hide_sport = ( $hide_sport == 'on' ? 'hide-sport' : '');
 
 		wp_enqueue_style( 'tile-style', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
 		wp_register_script( 'test-child-register', plugins_url('/divi-extension-example-master/test-child.js'));
@@ -150,11 +166,11 @@ class DICM_CTA_Child extends ET_Builder_Module {
 
 
 		$html = 
-		'<div class="deeds-tile ' . $style_tile_type . ' ' . $style_tile_size . '">
-        <div class="deeds-tile-desc">
+		'<div class="deeds-tile ' . $style_tile_type . ' ' . $style_tile_size . ' ' . $style_hide_sport . '">
+        <div class="deeds-tile-desc' . ' ' . $style_desc_info . '">
             <div class="deeds-tile-row">
                 <div class="deeds-tile-fav">
-                    <button class="simplefavorite-button id_-1_26792-0">
+                    <button class="simplefavorite-button">
                         <img class="favor_img unfavor" src="' . $favor_img_src . '" />
                     </button>
                 </div>
@@ -170,7 +186,7 @@ class DICM_CTA_Child extends ET_Builder_Module {
                 </div>
             </div>
             <div class="deeds-tile-row">
-                <div class="' . $style_desc_info . '">
+                <div class="tile-desc-info">
                     <a href="#">
                         <span>' . $description . '</span>
                     </a>

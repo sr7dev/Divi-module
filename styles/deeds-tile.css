@@ -51,16 +51,12 @@
   margin-left: 5px;
   width: calc(100% - 10px) !important;
 }
-.deeds-tile-maintitle{
-  margin-left: 5px;
-  width: calc(100% - 10px) !important;
-}
 .deeds-tile.hide-sport .tile-sport
 {
   display:none;
 }
 
-.deeds-tile.main-info .tile-desc-info
+.deeds-tile-desc.main-info .tile-desc-info
 {
   display:none;
 }

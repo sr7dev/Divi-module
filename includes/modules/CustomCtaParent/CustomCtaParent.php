@@ -56,6 +56,18 @@ class DICM_CTA_Parent extends ET_Builder_Module {
 				'description'     => esc_html__( 'Text entered here will appear as title.', 'dicm-divi-custom-modules' ),
 				'toggle_slug'     => 'main_content',
 			),
+			'styletilespos' => array(
+				'label'           => esc_html__( 'Tiles Layout', 'dicm-divi-custom-modules' ),
+				'type'            => 'select',
+				'option_category' => 'layout',
+				'options'					=> array(
+					'grid'		=> esc_html__( 'Grid', 'dicm-divi-custom-modules' ),
+					'row'	=> esc_html__( 'Row', 'dicm-divi-custom-modules' ),
+				),
+				'default_on_front'=> 'grid',
+				'description'     => esc_html__( 'Select info here will appear inside the module.', 'dicm-divi-custom-modules' ),
+				'toggle_slug'     => 'main_content',
+			),
 		);
 	}
 
@@ -63,7 +75,7 @@ class DICM_CTA_Parent extends ET_Builder_Module {
 		$title = $this->props['title'];
 		$style_section = 'section-label';
 		$style_tiles = 'deeds-tiles';
-		$style_tiles_pos = 'grid';
+		$style_tiles_pos = $this->props['styletilespos'];
 		wp_enqueue_style( 'tile-styles', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
 		wp_register_script( 'test-register', plugins_url('/divi-extension-example-master/test.js'));
 		wp_enqueue_script( 'test-divi-module', plugins_url('/divi-extension-example-master/test.js'), array('test-register'));
