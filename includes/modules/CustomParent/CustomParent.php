@@ -6,15 +6,15 @@
  *
  * @since 1.0.0
  */
-class DICM_CTA_Parent extends ET_Builder_Module {
+class DICM_Parent extends ET_Builder_Module {
 	// Module slug (also used as shortcode tag)
-	public $slug       = 'dicm_cta_parent';
+	public $slug       = 'dicm_parent';
 
 	// Full Visual Builder support
 	public $vb_support = 'on';
 
 	// Module item's slug
-	public $child_slug = 'dicm_cta_child';
+	public $child_slug = 'dicm_child';
 
 	/**
 	 * Module properties initialization
@@ -23,7 +23,7 @@ class DICM_CTA_Parent extends ET_Builder_Module {
 	 */
 	function init() {
 		// Module name
-		$this->name                    = esc_html__( 'Custom CTA Parent', 'dicm-divi-custom-modules' );
+		$this->name                    = esc_html__( 'Custom Parent', 'dicm-divi-custom-modules' );
 
 		// Module Icon
 		// Load customized svg icon and use it on builder as module icon. If you don't have svg icon, you can use
@@ -125,4 +125,4 @@ class DICM_CTA_Parent extends ET_Builder_Module {
 	}
 }
 
-new DICM_CTA_Parent;
+new DICM_Parent;

@@ -2,13 +2,13 @@
 import React, { Component } from 'react';
 
 
-class CustomCtaParent extends Component {
+class CustomParent extends Component {
 
-  static slug = 'dicm_cta_parent';
+  static slug = 'dicm_parent';
 
   /**
    * Module render in VB
-   * Basically DICM_CTA_Parent->render() equivalent in JSX
+   * Basically DICM_Parent->render() equivalent in JSX
    */
   render() {
     return (
@@ -20,4 +20,4 @@ class CustomCtaParent extends Component {
   }
 }
 
-export default CustomCtaParent;
+export default CustomParent;

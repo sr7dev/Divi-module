@@ -1,8 +1,8 @@
 // Internal Dependencies
-import CustomCtaParent from './CustomCtaParent/CustomCtaParent';
-import CustomCtaChild from './CustomCtaChild/CustomCtaChild';
+import CustomParent from './CustomParent/CustomParent';
+import CustomChild from './CustomChild/CustomChild';
 
 export default [
-  CustomCtaParent,
-  CustomCtaChild,
+  CustomParent,
+  CustomChild,
 ];

@@ -6,9 +6,9 @@
  *
  * @since 1.0.0
  */
-class DICM_CTA_Child extends ET_Builder_Module {
+class DICM_Child extends ET_Builder_Module {
 	// Module slug (also used as shortcode tag)
-	public $slug                     = 'dicm_cta_child';
+	public $slug                     = 'dicm_child';
 
 	// Module item has to use `child` as its type property
 	public $type                     = 'child';
@@ -31,14 +31,14 @@ class DICM_CTA_Child extends ET_Builder_Module {
 	 */
 	function init() {
 		// Module name
-		$this->name             = esc_html__( 'Custom CTA Child', 'dicm-divi-custom-modules' );
+		$this->name             = esc_html__( 'Custom Child', 'dicm-divi-custom-modules' );
 
 		// Default label for module item. Basically if $this->child_title_var and $this->child_title_fallback_var
 		// attributes are empty, this default text will be used instead as item label
-		$this->advanced_setting_title_text = esc_html__( 'CTA Item', 'et_builder' );
+		$this->advanced_setting_title_text = esc_html__( 'Item', 'et_builder' );
 
 		// Module item's modal title
-		$this->settings_text = esc_html__( 'CTA Item Settings', 'et_builder' );
+		$this->settings_text = esc_html__( 'Item Settings', 'et_builder' );
 
 		// Toggle settings
 		$this->settings_modal_toggles  = array(
@@ -226,4 +226,4 @@ class DICM_CTA_Child extends ET_Builder_Module {
 	}
 }
 
-new DICM_CTA_Child;
+new DICM_Child;

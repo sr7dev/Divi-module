@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 
 
-class CustomCtaChild extends Component {
+class CustomChild extends Component {
 
-  static slug = 'dicm_cta_child';
+  static slug = 'dicm_child';
 
   // _renderButton() {
   //   const props           = this.props;
@@ -37,7 +37,7 @@ class CustomCtaChild extends Component {
 
   /**
    * Module render in VB
-   * Basically DICM_CTA_Child->render() equivalent in JSX
+   * Basically DICM_Child->render() equivalent in JSX
    */
   render() {
     return (
@@ -51,4 +51,4 @@ class CustomCtaChild extends Component {
   }
 }
 
-export default CustomCtaChild;
+export default CustomChild;
