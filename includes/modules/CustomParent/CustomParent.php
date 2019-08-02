@@ -27,7 +27,7 @@ class DICM_Parent extends ET_Builder_Module {
 
 		// Module Icon
 		// Load customized svg icon and use it on builder as module icon. If you don't have svg icon, you can use
-		// $this->icon for using etbuilder font-icon. (See CustomCta / DICM_CTA class)
+		// $this->icon for using etbuilder font-icon. 
 		$this->icon_path               =  plugin_dir_path( __FILE__ ) . 'icon.svg';
 
 		// Toggle settings
@@ -56,6 +56,22 @@ class DICM_Parent extends ET_Builder_Module {
 				'description'     => esc_html__( 'Text entered here will appear as title.', 'dicm-divi-custom-modules' ),
 				'toggle_slug'     => 'main_content',
 			),
+			'instantsearch' => array(
+        'label'           => esc_html__( 'Instant Search', 'dicm-divi-custom-modules' ),
+        'type'            => 'text',
+        'option_category' => 'basic_option',
+        'description'     => esc_html__( 'Input variable name of instantsearch. ', 'dicm-divi-custom-modules' ),
+        'toggle_slug'     => 'main_content',
+        'default'     => 'searchDiscover'
+      ),
+      'container_id' => array(
+        'label'           => esc_html__( 'ID of Container', 'dicm-divi-custom-modules' ),
+        'type'            => 'text',
+        'option_category' => 'basic_option',
+        'description'     => esc_html__( 'Input id of container here.', 'dicm-divi-custom-modules' ),
+        'toggle_slug'     => 'main_content',
+        'default'     => 'hits',
+      ),
 			'styletilespos' => array(
 				'label'           => esc_html__( 'Tiles Layout', 'dicm-divi-custom-modules' ),
 				'type'            => 'select',
@@ -106,12 +122,6 @@ class DICM_Parent extends ET_Builder_Module {
 		$title = $this->props['title'];
 
 		// Render module content
-		// $output = sprintf(
-		// 	'<h2 class="dicm-title">%1$s</h2>
-		// 	<div class="dicm-content">%2$s</div>',
-		// 	esc_html( $title ),
-		// 	et_sanitized_previously( $this->content )
-		// );
 		$output = sprintf(
 			'<div>%1$s
 			%2$s</div></div>'
