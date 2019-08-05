@@ -136,6 +136,57 @@ class DICM_Parent extends ET_Builder_Module {
 	function get_parentTile_endTag() {
 		return '</div>';
 	}
+
+	function get_js_start()
+	{
+		$javascript = '
+			
+			searchDiscover.addWidget({
+		  	render: function(data) {
+			    var $hits = [];
+			    var is_empty = 1;
+		';
+	}
+	function get_js_end()
+	{
+		$javascript = '
+					$hits.push('</div>');
+
+			   	if (is_empty) {
+			      document.getElementById('hits').innerHTML = 'No result found.';
+			    } else {
+			      document.getElementById('hits').innerHTML = $hits.join('');
+			    }
+			  },
+			});
+		';
+	}
+
+	function get_algolia_section_label_html() {
+		$style_section = 'section-label';
+		$section_label = $this->props['section_label'];
+		
+		return '
+			$hits.push(\'<div class="' . $style_section . '">\');
+  		$hits.push(\'<div class="content">' . $section_label . '</div>\');
+			$hits.push(\'</div>\');
+			';
+	}
+
+	function get_algolia_parentTile_openTag()
+	{
+		$style_tiles = 'deeds-tiles';
+		$view_mode = $this->props['view_mode'];
+		return '
+			$hits.push(\'<div class="' . $style_tiles . ' ' . $view_mode . '">\');
+			';
+	}
+
+	function get_algolia_parentTile_endTag() {
+		return '
+			$hits.push(\'</div>\');
+			';
+	}
 	function get_html_with_js() {
 		
 
@@ -162,20 +213,41 @@ class DICM_Parent extends ET_Builder_Module {
 	function render( $attrs, $content = null, $render_slug ) {
 		// Module specific props added on $this->get_fields()
 		$title = $this->props['title'];
-
+		$use_algolia = $this->props['use_algolia'];
 		// Render module content
-		return $output = sprintf(
-			'<div>
-			  %1$s
-				%2$s
-					%3$s
-				%4$s
-			</div>'
-			, $this->get_section_label_html()
-			, $this->get_parentTile_openTag()
-			, $this->content
-			, $this->get_parentTile_endTag()
-		);
+		if ($use_algolia === 'off') {
+			return $output = sprintf(
+				'<div>
+				  %1$s
+					%2$s
+						%3$s
+					%4$s
+				</div>
+				'
+				, $this->get_section_label_html()
+				, $this->get_parentTile_openTag()
+				, $this->content
+				, $this->get_parentTile_endTag()
+			);
+		} else {
+			return $output = sprintf(
+				'<script>
+					%5$s
+						%1$s
+						%2$s
+							%3$s
+						%4$s
+					%6$s
+				</script>
+				'
+				, $this->get_section_label_html()
+				, $this->get_parentTile_openTag()
+				, $this->content
+				, $this->get_parentTile_endTag()
+				, $this->get_js_start()
+				, $this->get_js_end()
+			);
+		}
 		// Render wrapper
 		// 3rd party module with no full VB support has to wrap its render output with $this->_render_module_wrapper().
 		// This method will automatically add module attributes and proper structure for parallax image/video background
