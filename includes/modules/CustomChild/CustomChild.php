@@ -31,7 +31,7 @@ class DICM_Child extends ET_Builder_Module {
 	 */
 	function init() {
 		// Module name
-		$this->name             = esc_html__( 'Custom Child', 'dicm_divi_custom_modules' );
+		$this->name             = esc_html__( 'Deeds Tile', 'dicm_divi_custom_modules' );
 
 		// Default label for module item. Basically if $this->child_title_var and $this->child_title_fallback_var
 		// attributes are empty, this default text will be used instead as item label
@@ -360,17 +360,79 @@ class DICM_Child extends ET_Builder_Module {
 	  return $output;
 	}
 
+	function get_tile_js($entireInfoPos, 
+									$sizeType, 
+									$showSportIconStyle, 
+									$extraInfoPos, 
+									$showFavoriteIconStyle, 
+									$showMainTitleStyle,
+									$favor_img_src, 
+									$mainTitle, 
+									$sport_img_src, 
+									$extraInfo, 
+									$profile_img_src) {
+		$javascript = "
+			data.results.hits.forEach(function(hit, index, array) {
+				is_empty = 0;
+	      var profile_img = hit.".$profile_img_src."
+	        ? hit.".$profile_img_src."
+	        : 'https://devdemodeeds.wpengine.com/wp-content/uploads/2019/01/EmptyFace.png';
+	      \$hits.push(
+	        '<div class=\"deeds-tile " . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
+			      '<div class=\"deeds-tile-desc " . $extraInfoPos . "\">' +
+			        '<div class=\"deeds-tile-row\">' +
+			          '<div class=\"deeds-tile-fav\">' +
+			            '<button class=\"simplefavorite-button\">' +
+			              '<img class=\"favor_img " . $showFavoriteIconStyle . "\" src=\"" . $favor_img_src . "\" />' +
+			            '</button>' +
+			          '</div>' +
+			          '<div class=\"deeds-tile-maintitle " . $showMainTitleStyle . "\">' +
+			            '<a href=\"#\">' +
+			              '<span>' + hit.".$mainTitle." + '</span>' +
+			            '</a>' +
+			          '</div>' +
+			          '<div class=\"tile-sport\">' +
+			            '<a href=\"#\">' +
+			              '<img src=\"" . $sport_img_src . "\" alt=\"Kayaking\">' +
+			            '</a>' +
+			          '</div>' +
+			        '</div>' +
+			        '<div class=\"deeds-tile-row\">' +
+			          '<div class=\"tile-desc-info\">' +
+			            '<a href=\"#\">' +
+			              '<span>' + hit." . $extraInfo . " + '</span>' +
+			            '</a>' +
+			          '</div>' +
+			        '</div>' +
+			      '</div>' +
+			      '<div class=\"deeds-tile-row-profile-img\">' +
+			        '<a href=\"#\" class=\"deeds-tile-row\">' +
+			          '<img id=\"Doguetebmx\" src=\"' + profile_img + '\">' +
+			        '</a>' +
+			      '</div>' +
+			    '</div>'
+	      );
+	    });
+		";
+		return $javascript;
+	}
+
 	/**
 	 * Module's advanced fields configuration
 	 *
 	 * @return array
 	 */
 	function get_html_with_js() {
+		// get att value from parent module
+		$parent_module = self::get_parent_modules('page')['dicm_parent'];
+		$pcontainer_id = $parent_module->shortcode_atts['container_id'];
+		$useAlgolia = $parent_module->shortcode_atts['use_algolia'];
+
 		// input information tab
 		$mainTitle = $this->props['main_title'];
 		$subTitle = $this->props['sub_title'];
 		$extraInfo = $this->props['extra_info'];
-		$useAlgoliaField = $this->props['use_algolia_field'];
+		$useAlgoliaField = $useAlgolia;
 		$profile_img_src = $this->props['img_src'];
 		
 		// show information
@@ -411,10 +473,6 @@ class DICM_Child extends ET_Builder_Module {
 		$sport_img_src = 'https://devdeeds.wpengine.com/wp-content/uploads/2019/04/kayaking-blue.svg';
 		$favor_img_src = 'https://devdeeds.wpengine.com/wp-content/uploads/2019/03/favorite-icon-empty.svg';
 		
-		// get att value from parent module
-		$parent_module = self::get_parent_modules('page')['dicm_parent'];
-		$pcontainer_id = $parent_module->shortcode_atts['container_id'];
-
 		// load javascript
 		wp_enqueue_style( 'tile-style', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
 		wp_register_script( 'test-child-register', plugins_url('/divi-extension-example-master/test-child.js'));
@@ -436,7 +494,20 @@ class DICM_Child extends ET_Builder_Module {
 			$profile_img_src
 		);
 		
-		return $html;
+		$javascript = $this->get_tile_js(
+			$entireInfoPos, 
+			$sizeType, 
+			$showSportIconStyle, 
+			$extraInfoPos, 
+			$showFavoriteIconStyle, 
+			$showMainTitleStyle,
+			$favor_img_src, 
+			$mainTitle, 
+			$sport_img_src, 
+			$extraInfo, 
+			$profile_img_src
+		);
+		return ($useAlgoliaField === 'off' ? $html : $javascript);
 	}
 
 	/**
@@ -451,11 +522,22 @@ class DICM_Child extends ET_Builder_Module {
 	 * @return string module's rendered output
 	 */
 	function render( $attrs, $content = null, $render_slug ) {
+		$useAlgolia = $this->props['use_algolia_field'];
+
 		// Render module content
-		return sprintf(
-			'<div class="dicm-content">%1$s</div>',
-			$this->get_html_with_js()
-		);
+		if ($useAlgolia === 'off'){
+			echo "off";
+			return sprintf(
+				'<div class="dicm-content">%1$s</div>',
+				$this->get_html_with_js()
+			);	
+		} else {
+			return sprintf(
+				'%1$s',
+				$this->get_html_with_js()
+			);
+		}
+		
 	}
 }
 

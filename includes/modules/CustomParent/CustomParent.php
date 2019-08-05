@@ -23,7 +23,7 @@ class DICM_Parent extends ET_Builder_Module {
 	 */
 	function init() {
 		// Module name
-		$this->name                    = esc_html__( 'Custom Parent', 'dicm_divi_custom_modules' );
+		$this->name                    = esc_html__( 'Algolia Hits v2', 'dicm_divi_custom_modules' );
 
 		// Module Icon
 		// Load customized svg icon and use it on builder as module icon. If you don't have svg icon, you can use
@@ -117,11 +117,11 @@ class DICM_Parent extends ET_Builder_Module {
 		);
 	}
 	function get_section_label_html() {
-		$style_section = 'section-label';
+		$sectionLabel_style = 'section-label';
 		$section_label = $this->props['section_label'];
 		
 		return 
-			'<div class="' . $style_section . '">
+			'<div class="' . $sectionLabel_style . '">
   			<div class="content">' . $section_label . '</div>
 			</div>';
 	}
@@ -139,7 +139,7 @@ class DICM_Parent extends ET_Builder_Module {
 
 	function get_js_start()
 	{
-		$javascript = '
+		return $javascript = '
 			
 			searchDiscover.addWidget({
 		  	render: function(data) {
@@ -149,25 +149,25 @@ class DICM_Parent extends ET_Builder_Module {
 	}
 	function get_js_end()
 	{
-		$javascript = '
-					$hits.push('</div>');
+		return $javascript = "
+					\$hits.push('</div>');
 
 			   	if (is_empty) {
 			      document.getElementById('hits').innerHTML = 'No result found.';
 			    } else {
-			      document.getElementById('hits').innerHTML = $hits.join('');
+			      document.getElementById('hits').innerHTML = \$hits.join('');
 			    }
 			  },
 			});
-		';
+		";
 	}
 
 	function get_algolia_section_label_html() {
-		$style_section = 'section-label';
+		$sectionLabel_style = 'section-label';
 		$section_label = $this->props['section_label'];
 		
 		return '
-			$hits.push(\'<div class="' . $style_section . '">\');
+			$hits.push(\'<div class="' . $sectionLabel_style . '">\');
   		$hits.push(\'<div class="content">' . $section_label . '</div>\');
 			$hits.push(\'</div>\');
 			';
@@ -187,7 +187,7 @@ class DICM_Parent extends ET_Builder_Module {
 			$hits.push(\'</div>\');
 			';
 	}
-	function get_html_with_js() {
+	function get_html() {
 		
 
 		wp_enqueue_style( 'tile-styles', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
@@ -195,10 +195,18 @@ class DICM_Parent extends ET_Builder_Module {
 		wp_enqueue_script( 'test-divi-module', plugins_url('/divi-extension-example-master/test.js'), array('test-register'));
 		wp_localize_script( 'test-divi-module', 'testSettings', array('test-string' => $title,));
 		wp_print_scripts( 'test-divi-module');
-		$html =  $this->get_parentTile_openTag();
+		$container_id = $this->props['container_id'];
+
+		$html = ('<div id="'.$container_id.'" style="color:#000000 !important"></div>');
+ 
 		return $html;
 	}
-
+	function remove_first_last_lines($text)
+	{
+		$startPos = strpos($text, 'data.');
+		$endPos = strpos($text, '});') + 3;
+		return substr($text, $startPos, $endPos-$startPos);;
+	}
 	/**
 	 * Render module output
 	 *
@@ -230,6 +238,12 @@ class DICM_Parent extends ET_Builder_Module {
 				, $this->get_parentTile_endTag()
 			);
 		} else {
+			// echo '5', $this->get_js_start();
+			// echo '1',  $this->get_algolia_section_label_html();
+			// echo '2', $this->get_algolia_parentTile_openTag();
+			// echo '3', $this->content;
+			// echo '4', $this->get_algolia_parentTile_endTag();
+			// echo '6', $this->get_js_end();
 			return $output = sprintf(
 				'<script>
 					%5$s
@@ -239,13 +253,15 @@ class DICM_Parent extends ET_Builder_Module {
 						%4$s
 					%6$s
 				</script>
+				%7$s
 				'
-				, $this->get_section_label_html()
-				, $this->get_parentTile_openTag()
-				, $this->content
-				, $this->get_parentTile_endTag()
+				, $this->get_algolia_section_label_html()
+				, $this->get_algolia_parentTile_openTag()
+				, $this->remove_first_last_lines($this->content)
+				, $this->get_algolia_parentTile_endTag()
 				, $this->get_js_start()
 				, $this->get_js_end()
+				, $this->get_html()
 			);
 		}
 		// Render wrapper
