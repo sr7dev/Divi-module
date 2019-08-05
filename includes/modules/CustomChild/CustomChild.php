@@ -83,23 +83,29 @@ class DICM_Child extends ET_Builder_Module {
 				'label'           	=> esc_html__( 'Main Title', 'dicm_divi_custom_modules' ),
 				'type'            	=> 'text',
 				'option_category' 	=> 'configuration',
-				'description'     	=> esc_html__( 'Input main title, not use algolia field.', 'dicm_divi_custom_modules' ),
+				'description'     	=> esc_html__( 'Input main title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
 			),
 			'sub_title' => array(
 				'label'           	=> esc_html__( 'Sub Title', 'dicm_divi_custom_modules' ),
 				'type'            	=> 'text',
 				'option_category' 	=> 'configuration',
-				'description'     	=> esc_html__( 'Input sub title, not use algolia field.', 'dicm_divi_custom_modules' ),
+				'description'     	=> esc_html__( 'Input sub title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
 			),
 			'extra_info' => array(
 				'label'           	=> esc_html__( 'Extra Info', 'dicm_divi_custom_modules' ),
 				'type'            	=> 'text',
 				'option_category' 	=> 'configuration',
-				'description'     	=> esc_html__( 'Input extra info, not use algolia field.', 'dicm_divi_custom_modules' ),
+				'description'     	=> esc_html__( 'Input extra info.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
-				'show_if'   				=> array( 'use_algolia_field' => 'off'),
+			),
+			'img_src' => array(
+				'label'           	=> esc_html__( 'Picture Source', 'dicm_divi_custom_modules' ),
+				'type'            	=> 'text',
+				'option_category' 	=> 'configuration',
+				'description'     	=> esc_html__( 'Input image source.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'input_information',
 			),
 
 			// Show information tab
@@ -300,12 +306,73 @@ class DICM_Child extends ET_Builder_Module {
 		);
 	}
 
+	/**
+	 * Module's advanced fields configuration
+	 *
+	 * @return array
+	 */
+	function get_html($entireInfoPos, 
+									$sizeType, 
+									$showSportIconStyle, 
+									$extraInfoPos, 
+									$showFavoriteIconStyle, 
+									$showMainTitleStyle,
+									$favor_img_src, 
+									$mainTitle, 
+									$sport_img_src, 
+									$extraInfo, 
+									$profile_img_src) {
+		$output = 
+			'<div class="deeds-tile ' . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . '">
+	      <div class="deeds-tile-desc ' . $extraInfoPos . '">
+	        <div class="deeds-tile-row">
+	          <div class="deeds-tile-fav">
+	            <button class="simplefavorite-button">
+	              <img class="favor_img ' . $showFavoriteIconStyle . '" src="' . $favor_img_src . '" />
+	            </button>
+	          </div>
+	          <div class="deeds-tile-maintitle ' . $showMainTitleStyle . '">
+	            <a href="#">
+	              <span>' . $mainTitle . '</span>
+	            </a>
+	          </div>
+	          <div class="tile-sport">
+	            <a href="#">
+	              <img src="' . $sport_img_src . '" alt="Kayaking">
+	            </a>
+	          </div>
+	        </div>
+	        <div class="deeds-tile-row">
+	          <div class="tile-desc-info ">
+	            <a href="#">
+	              <span>' . $extraInfo . '</span>
+	            </a>
+	          </div>
+	        </div>
+	      </div>
+	      <div class="deeds-tile-row-profile-img">
+	        <a href="#" class="deeds-tile-row">
+	          <img id="Doguetebmx" src="' . $profile_img_src . '">
+	        </a>
+	      </div>
+	    </div>';
+
+	  return $output;
+	}
+
+	/**
+	 * Module's advanced fields configuration
+	 *
+	 * @return array
+	 */
 	function get_html_with_js() {
 		// input information tab
 		$mainTitle = $this->props['main_title'];
 		$subTitle = $this->props['sub_title'];
 		$extraInfo = $this->props['extra_info'];
-
+		$useAlgoliaField = $this->props['use_algolia_field'];
+		$profile_img_src = $this->props['img_src'];
+		
 		// show information
 		$showFavoriteIcon = $this->props['show_fav_icon'];
 		$showMainTitle = $this->props['show_main_title'];
@@ -341,7 +408,6 @@ class DICM_Child extends ET_Builder_Module {
 		$showFavoriteIconStyle = ( $showFavoriteIcon == 'on' ? '' : 'hide-favorite-icon');
 
 
-		$profile_img_src = 'https://amdgjadcen.cloudimg.io/width/200/q35.foil1/https://www.deedsalone.com/wp-content/uploads/2018/12/Doug-post.png';
 		$sport_img_src = 'https://devdeeds.wpengine.com/wp-content/uploads/2019/04/kayaking-blue.svg';
 		$favor_img_src = 'https://devdeeds.wpengine.com/wp-content/uploads/2019/03/favorite-icon-empty.svg';
 		
@@ -356,40 +422,20 @@ class DICM_Child extends ET_Builder_Module {
 		wp_localize_script( 'test-child-divi-module', 'testChildSettings', array('test-string' => $pcontainer_id,));
 		wp_print_scripts( 'test-child-divi-module');
 
-		$html = 
-		'<div class="deeds-tile ' . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . '">
-      <div class="deeds-tile-desc ' . $extraInfoPos . '">
-        <div class="deeds-tile-row">
-          <div class="deeds-tile-fav">
-            <button class="simplefavorite-button">
-              <img class="favor_img ' . $showFavoriteIconStyle . '" src="' . $favor_img_src . '" />
-            </button>
-          </div>
-          <div class="deeds-tile-maintitle ' . $showMainTitleStyle . '">
-            <a href="#">
-              <span>' . $mainTitle . '</span>
-            </a>
-          </div>
-          <div class="tile-sport">
-            <a href="#">
-              <img src="' . $sport_img_src . '" alt="Kayaking">
-            </a>
-          </div>
-        </div>
-        <div class="deeds-tile-row">
-          <div class="tile-desc-info ">
-            <a href="#">
-              <span>' . $extraInfo . '</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="deeds-tile-row-profile-img">
-        <a href="#" class="deeds-tile-row">
-          <img id="Doguetebmx" src="' . $profile_img_src . '">
-        </a>
-      </div>
-    </div>';
+		$html = $this->get_html(
+			$entireInfoPos, 
+			$sizeType, 
+			$showSportIconStyle, 
+			$extraInfoPos, 
+			$showFavoriteIconStyle, 
+			$showMainTitleStyle,
+			$favor_img_src, 
+			$mainTitle, 
+			$sport_img_src, 
+			$extraInfo, 
+			$profile_img_src
+		);
+		
 		return $html;
 	}
 
