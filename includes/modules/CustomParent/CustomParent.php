@@ -116,6 +116,38 @@ class DICM_Parent extends ET_Builder_Module {
       ),
 		);
 	}
+
+	function cloud_img_prefix()
+  {
+	  if (function_exists ('get_cloud_img_prefix'))
+	  {
+
+		  return get_cloud_img_prefix("","","","");
+	  }
+	  return "";
+	
+  }
+  function cloud_img_gray_prefix()
+  {
+	  if (function_exists ('get_cloud_img_gray_prefix'))
+	  {
+
+		  return get_cloud_img_gray_prefix("","","","");
+	  }
+	  return "";
+	
+  }
+  function cloud_img_full_prefix($operation, $width, $height, $filter)
+  {
+	  if (function_exists ('get_cloud_img_prefix'))
+	  {
+
+		  return get_cloud_img_prefix($operation, $width, $height, $filter);
+	  }
+	  return "";
+	
+  }
+
 	function get_section_label_html() {
 		$sectionLabel_style = 'section-label';
 		$section_label = $this->props['section_label'];
@@ -139,13 +171,96 @@ class DICM_Parent extends ET_Builder_Module {
 
 	function get_js_start()
 	{
-		return $javascript = '
+		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
+		$instantSearch = $this->props['instantsearch'];
+		$container_id = $this->props['container_id'];
+		return $javascript = "
+			document.addEventListener('DOMContentLoaded', function(event) 
+			{
+				var user_id = ". (is_user_logged_in() ? get_current_user_id() : -1) . "
+				if (Number.isInteger(user_id))
+					user_id = user_id.toString();
+				".$instantSearch.".on('render', function() {	
+					function load_js_responsive_cloudimage()
+					{
+		 			  var cloudimgResponsive" .$container_id. " = new window.CIResponsive({
+							token: 'amdgjadcen',
+							lazyLoading: true,
+							exactSize: true,
+							imgLoadingAnimation: false,
+					  });
+					  window.lazySizes.init();
+					}
+					load_js_responsive_cloudimage();
+					".($respInitDelay ?	'setTimeout(load_js_responsive_cloudimage,' .$respInitDelay.'");'
+					:'')
+               ."
+				});
+			});
+			function get_cloudImage_subfix(org_url)
+			{
+
+				if (typeof (is_absolute_url) === \"function\" && is_absolute_url(org_url))
+				{
+					return org_url;
+				}
+				else
+				{
+					return \"https://www.deedsalone.com\" + \"/\" + org_url;
+				}
+			}
+
+			function get_cloudImage_url(org_url, isGray)
+			{
 			
+				var cloud_img_pre;
+				if (isGray) {
+					cloud_img_pre = '" .$this->cloud_img_gray_prefix(). "';
+				}
+				else
+				{
+					cloud_img_pre = '" .$this->cloud_img_prefix(). "';
+				}
+				if (typeof (is_absolute_url) === \"function\" && is_absolute_url(org_url))
+				{
+					return cloud_img_pre + org_url;
+				}
+				else if (cloud_img_pre.length > 0)
+				{
+					return cloud_img_pre + \"_deeds_/\" + org_url;
+				}
+				else 
+					return org_url;
+			}
+		
+			function get_cloudImage_fullparam_url(org_url, operation, size, filter)
+			{
+				// console.log(\"get_cloudImage_fullparam_url\", org_url, operation, size, filter);
+				var cloud_img_pre;
+				if (!operation)
+					operation = '" .$cloudimg_operation. "';
+				if (!size)
+					size = '" .$cloudimg_width. "x" .$cloudimg_height. "';
+			
+				if (!filter)
+					filter = '".$cloudimg_filter. "';
+				// console.log(\"changed  get_cloudImage_fullparam_url\", org_url, operation, size, filter);
+				cloud_img_pre =  '//' + '" .$cloudimg_token. "' + '.cloudimg.io/' + operation + '/' + size + '/' + filter + '/';
+				// console.log(\"cloud_img_pre\", cloud_img_pre);
+				if (typeof (is_absolute_url) === \"function\" && is_absolute_url(org_url))
+				{
+					return cloud_img_pre + org_url;
+				}
+				else
+				{
+					return cloud_img_pre + \"_deeds_\" + org_url;
+				}
+			}	
 			searchDiscover.addWidget({
 		  	render: function(data) {
-			    var $hits = [];
+			    var \$hits = [];
 			    var is_empty = 1;
-		';
+		";
 	}
 	function get_js_end()
 	{
@@ -203,9 +318,19 @@ class DICM_Parent extends ET_Builder_Module {
 	}
 	function remove_first_last_lines($text)
 	{
-		$startPos = strpos($text, 'data.');
-		$endPos = strpos($text, '});') + 3;
-		return substr($text, $startPos, $endPos-$startPos);;
+		$childCount = substr_count($text, 'start');
+		$childString = '';
+		$childsString = '';
+		echo $childCount;
+		for( $i = 0; $i < $childCount; $i++ ) {
+			$startPos = strpos($text, 'start') + 5;
+			$endPos = strpos($text, ';end') + 1;
+			$childString = substr($text, $startPos, $endPos-$startPos);
+			$text = substr($text, $endPos);
+			$childsString .= $childString;
+		}
+		
+		return $childsString;
 	}
 	/**
 	 * Render module output
@@ -238,14 +363,10 @@ class DICM_Parent extends ET_Builder_Module {
 				, $this->get_parentTile_endTag()
 			);
 		} else {
-			// echo '5', $this->get_js_start();
-			// echo '1',  $this->get_algolia_section_label_html();
-			// echo '2', $this->get_algolia_parentTile_openTag();
-			// echo '3', $this->content;
-			// echo '4', $this->get_algolia_parentTile_endTag();
-			// echo '6', $this->get_js_end();
 			return $output = sprintf(
-				'<script>
+				'<script src="https://cdn.scaleflex.it/filerobot/js-cloudimage-responsive/lazysizes.min.js"></script>
+		  	<script src="https://cdn.scaleflex.it/filerobot/js-cloudimage-responsive/v1.1.0.min.js"></script>
+				<script>
 					%5$s
 						%1$s
 						%2$s

@@ -107,6 +107,15 @@ class DICM_Child extends ET_Builder_Module {
 				'description'     	=> esc_html__( 'Input image source.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
 			),
+			'empty_img' => array(
+				'label'           	=> esc_html__( 'Empty Image', 'dicm_divi_custom_modules' ),
+				'type'            	=> 'text',
+				'option_category' 	=> 'configuration',
+				'description'     	=> esc_html__( 'Show image if empty image source.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'input_information',
+				'default_on_front'	=> '/wp-content/uploads/2019/03/empty-face-athlete.svg',
+				'show_if'   				=> array( 'parentModule:use_algolia' => 'on'),
+			),
 
 			// Show information tab
 			'show_fav_icon' => array(
@@ -231,6 +240,7 @@ class DICM_Child extends ET_Builder_Module {
 				'option_category' 	=> 'configuration',
 				'description'     	=> esc_html__( 'Ratio.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'cloud_image',
+				'default'						=> '1',
 				'show_if'   				=> array( 'use_resp_js_cloud_img' => 'on'),
 			),
 			'load_init' => array(
@@ -368,19 +378,49 @@ class DICM_Child extends ET_Builder_Module {
 									$showMainTitleStyle,
 									$favor_img_src, 
 									$mainTitle, 
-									$sport_img_src, 
+									$sport_img_src,
 									$extraInfo, 
 									$profile_img_src,
-									$instantSearch) {
+									$emptyImage, 
+									$instantSearch,
+									$container_id,
+									$useCloudImage,
+									$respJSCloudRatio) {
+		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
+		$respInitDelay = $this->props['resp_init_again_call_delay'];
 		$javascript = "
-			data.results.hits.forEach(function(hit, index, array) {
+			startdata.results.hits.forEach(function(hit, index, array) {
 				is_empty = 0;
+				var instagram_uername= '';//lastWordCapitalized(hit.instagramurl);
 				var is_fav = hit.favorite_users && (hit.favorite_users.indexOf(user_id) >=0 )? 1 : 0;
 				var favor_img_html = get_favbutton_html_by_instant2(user_id, " .$instantSearch. ", hit.objectID, is_fav);
 				var sport_img = get_blue_sport_img(get_hit_sport(hit));
 	      var profile_img = hit.".$profile_img_src."
-	        ? hit.".$profile_img_src."
-	        : 'https://devdemodeeds.wpengine.com/wp-content/uploads/2019/01/EmptyFace.png';
+	        ? hit." .$profile_img_src. ": (sport_img ? sport_img : '" .$emptyImage. "');
+	      var loading_img = '/wp-content/uploads/2019/06/preloading_img.svg';
+			  var img_src_attr = 'src';
+			  var img_src_val = get_cloudImage_url(profile_img);
+			  var img_extra_attr = '';
+			  var img_extra_class = '';
+			  var extra_item_class = '';
+			  
+			  if ('".$useCloudImage. "' === 'on')
+			  {
+      	  img_src_attr = 'src';
+				  img_src_val = loading_img;
+				  if (!is_empty_field(profile_img))
+				  {	
+						img_cisrc_attr = 'ci-src';
+						img_cisrc_val = get_cloudImage_subfix(profile_img);
+				  }
+				  else
+				  {
+						img_src_attr = 'src';
+						img_src_val = get_cloudImage_fullparam_url(profile_img, \"\", '400x250', \"\");
+						img_extra_class = 'empty_img';
+				  }
+				  img_extra_attr = 'style=\"\" ratio=\"".$respJSCloudRatio."\"';
+			  }
 	      \$hits.push(
 	        '<div class=\"deeds-tile " . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
 			      '<div class=\"deeds-tile-desc " . $extraInfoPos . "\">' +
@@ -409,22 +449,19 @@ class DICM_Child extends ET_Builder_Module {
 			      '</div>' +
 			      '<div class=\"deeds-tile-row-profile-img\">' +
 			        '<a href=\"#\" class=\"deeds-tile-row\">' +
-			          '<img id=\"Doguetebmx\" class=\"profile-size\" src=\"' + profile_img + '\">' +
+			          '<img id=\"' + instagram_uername + '\" ' + img_src_attr + '=\"' + img_src_val + '\" ' + img_cisrc_attr + '=\"' + img_cisrc_val + '\" class=\"flex-photo ' + img_extra_class + '\"' + img_extra_attr + '>' +
 			        '</a>' +
 			      '</div>' +
 			    '</div>'
 	      );
-	    });
+	    });end
 		";
 		return $javascript;
 	}
 
-	/**
-	 * Module's advanced fields configuration
-	 *
-	 * @return array
-	 */
 	function get_html_with_js() {
+		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
+
 		// get att value from parent module
 		$parent_module = self::get_parent_modules('page')['dicm_parent'];
 		$pcontainer_id = $parent_module->shortcode_atts['container_id'];
@@ -437,6 +474,7 @@ class DICM_Child extends ET_Builder_Module {
 		$extraInfo = $this->props['extra_info'];
 		$useAlgoliaField = $useAlgolia;
 		$profile_img_src = $this->props['img_src'];
+		$emptyImage = $this->props['empty_img'];
 		
 		// show information
 		$showFavoriteIcon = $this->props['show_fav_icon'];
@@ -478,10 +516,18 @@ class DICM_Child extends ET_Builder_Module {
 		
 		// load javascript
 		wp_enqueue_style( 'tile-style', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
-		wp_register_script( 'test-child-register', plugins_url('/divi-extension-example-master/test-child.js'));
-		wp_enqueue_script( 'test-child-divi-module', plugins_url('/divi-extension-example-master/test-child.js'), array('test-child-register'));
-		wp_localize_script( 'test-child-divi-module', 'testChildSettings', array('test-string' => $pcontainer_id,));
-		wp_print_scripts( 'test-child-divi-module');
+		wp_register_script( 'deeds-tile-register', plugins_url('/divi-extension-example-master/deeds-tile.js'));
+		wp_enqueue_script( 'deeds-tile-divi-module', plugins_url('/divi-extension-example-master/deeds-tile.js'), array('deeds-tile-register'));
+		wp_localize_script( 'deeds-tile-divi-module', 'deedsTileSettings', 
+			array('cloudImgGrayPrefix' 	=> $this->cloud_img_gray_prefix(),
+						'cloudImgPrefix'			=> $this->cloud_img_prefix(),
+						'cloudimg_operation'	=> $cloudimg_operation,
+						'cloudimg_width'			=> $cloudimg_width,
+						'couldimg_height'			=> $couldimg_height,
+						'cloudimg_filter'			=> $cloudimg_filter,
+						'cloudimg_token'			=> $cloudimg_token));
+
+		wp_print_scripts( 'deeds-tile-divi-module');
 
 		$html = $this->get_tile_html(
 			$entireInfoPos, 
@@ -506,11 +552,16 @@ class DICM_Child extends ET_Builder_Module {
 			$showMainTitleStyle,
 			$favor_img_src, 
 			$mainTitle, 
-			$sport_img_src, 
+			$sport_img_src,
 			$extraInfo, 
 			$profile_img_src,
-			$pinstantSearch
+			$emptyImage, 
+			$pinstantSearch,
+			$pcontainer_id,
+			$useCloudImage,
+			$respJSCloudRatio
 		);
+		
 		return ($useAlgoliaField === 'off' ? $html : $javascript);
 	}
 
