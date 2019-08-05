@@ -8,7 +8,7 @@ Author:      Elegant Themes
 Author URI:  https://elegantthemes.com
 License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: dicm-divi-custom-modules
+Text Domain: dicm_divi_custom_modules
 Domain Path: /languages
 
 Divi Custom Modules is free software: you can redistribute it and/or modify

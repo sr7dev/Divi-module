@@ -8,7 +8,7 @@ class DICM_DiviCustomModules extends DiviExtension {
 	 *
 	 * @var string
 	 */
-	public $gettext_domain = 'dicm-divi-custom-modules';
+	public $gettext_domain = 'dicm_divi_custom_modules';
 
 	/**
 	 * The extension's WP Plugin name.
@@ -17,7 +17,7 @@ class DICM_DiviCustomModules extends DiviExtension {
 	 *
 	 * @var string
 	 */
-	public $name = 'divi-custom-modules';
+	public $name = 'divi_custom_modules';
 
 	/**
 	 * The extension's version
@@ -34,7 +34,7 @@ class DICM_DiviCustomModules extends DiviExtension {
 	 * @param string $name
 	 * @param array  $args
 	 */
-	public function __construct( $name = 'divi-custom-modules', $args = array() ) {
+	public function __construct( $name = 'divi_custom_modules', $args = array() ) {
 		$this->plugin_dir              = plugin_dir_path( __FILE__ );
 		$this->plugin_dir_url          = plugin_dir_url( $this->plugin_dir );
 

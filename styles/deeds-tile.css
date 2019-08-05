@@ -63,7 +63,7 @@ a, div, img, li, span, ul {
   margin-left: 5px;
   width: calc(100% - 10px) !important;
 }
-.deeds-tile.hide-sport .tile-sport
+.deeds-tile.hide-sport-icon .tile-sport
 {
   display:none;
 }
@@ -73,7 +73,7 @@ a, div, img, li, span, ul {
   display:none;
 }
 
-.deeds-tile.hide-sport .tile-sport
+.deeds-tile.hide-sport-icon .tile-sport
 {
   display:none;
 }
@@ -122,4 +122,10 @@ button.simplefavorite-button
 {
   padding:3px;
   border: 1px solid #ccc;
+}
+.hide-favorite-icon,
+.hide-main-title,
+.hide-sub-title,
+.hide-extra-info{
+  display: none;
 }
