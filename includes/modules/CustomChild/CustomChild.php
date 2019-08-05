@@ -352,7 +352,7 @@ class DICM_Child extends ET_Builder_Module {
 	      </div>
 	      <div class="deeds-tile-row-profile-img">
 	        <a href="#" class="deeds-tile-row">
-	          <img id="Doguetebmx" src="' . $profile_img_src . '">
+	          <img id="Doguetebmx" class="profile-size" src="' . $profile_img_src . '">
 	        </a>
 	      </div>
 	    </div>';
@@ -370,10 +370,14 @@ class DICM_Child extends ET_Builder_Module {
 									$mainTitle, 
 									$sport_img_src, 
 									$extraInfo, 
-									$profile_img_src) {
+									$profile_img_src,
+									$instantSearch) {
 		$javascript = "
 			data.results.hits.forEach(function(hit, index, array) {
 				is_empty = 0;
+				var is_fav = hit.favorite_users && (hit.favorite_users.indexOf(user_id) >=0 )? 1 : 0;
+				var favor_img_html = get_favbutton_html_by_instant2(user_id, " .$instantSearch. ", hit.objectID, is_fav);
+				var sport_img = get_blue_sport_img(get_hit_sport(hit));
 	      var profile_img = hit.".$profile_img_src."
 	        ? hit.".$profile_img_src."
 	        : 'https://devdemodeeds.wpengine.com/wp-content/uploads/2019/01/EmptyFace.png';
@@ -381,10 +385,8 @@ class DICM_Child extends ET_Builder_Module {
 	        '<div class=\"deeds-tile " . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
 			      '<div class=\"deeds-tile-desc " . $extraInfoPos . "\">' +
 			        '<div class=\"deeds-tile-row\">' +
-			          '<div class=\"deeds-tile-fav\">' +
-			            '<button class=\"simplefavorite-button\">' +
-			              '<img class=\"favor_img " . $showFavoriteIconStyle . "\" src=\"" . $favor_img_src . "\" />' +
-			            '</button>' +
+			          '<div class=\"deeds-tile-fav " . $showFavoriteIconStyle . "\">' +
+			            favor_img_html +
 			          '</div>' +
 			          '<div class=\"deeds-tile-maintitle " . $showMainTitleStyle . "\">' +
 			            '<a href=\"#\">' +
@@ -393,7 +395,7 @@ class DICM_Child extends ET_Builder_Module {
 			          '</div>' +
 			          '<div class=\"tile-sport\">' +
 			            '<a href=\"#\">' +
-			              '<img src=\"" . $sport_img_src . "\" alt=\"Kayaking\">' +
+			              '<img src=\"' + sport_img + '\" alt=\"' + get_hit_sport(hit) + '\">' +
 			            '</a>' +
 			          '</div>' +
 			        '</div>' +
@@ -407,7 +409,7 @@ class DICM_Child extends ET_Builder_Module {
 			      '</div>' +
 			      '<div class=\"deeds-tile-row-profile-img\">' +
 			        '<a href=\"#\" class=\"deeds-tile-row\">' +
-			          '<img id=\"Doguetebmx\" src=\"' + profile_img + '\">' +
+			          '<img id=\"Doguetebmx\" class=\"profile-size\" src=\"' + profile_img + '\">' +
 			        '</a>' +
 			      '</div>' +
 			    '</div>'
@@ -426,6 +428,7 @@ class DICM_Child extends ET_Builder_Module {
 		// get att value from parent module
 		$parent_module = self::get_parent_modules('page')['dicm_parent'];
 		$pcontainer_id = $parent_module->shortcode_atts['container_id'];
+		$pinstantSearch = $parent_module->shortcode_atts['instantsearch'];
 		$useAlgolia = $parent_module->shortcode_atts['use_algolia'];
 
 		// input information tab
@@ -505,7 +508,8 @@ class DICM_Child extends ET_Builder_Module {
 			$mainTitle, 
 			$sport_img_src, 
 			$extraInfo, 
-			$profile_img_src
+			$profile_img_src,
+			$pinstantSearch
 		);
 		return ($useAlgoliaField === 'off' ? $html : $javascript);
 	}
