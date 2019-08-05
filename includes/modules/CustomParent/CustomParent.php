@@ -116,24 +116,35 @@ class DICM_Parent extends ET_Builder_Module {
       ),
 		);
 	}
-
-	function get_html_with_js() {
-		$title = $this->props['section_label'];
+	function get_section_label_html() {
 		$style_section = 'section-label';
+		$section_label = $this->props['section_label'];
+		
+		return 
+			'<div class="' . $style_section . '">
+  			<div class="content">' . $section_label . '</div>
+			</div>';
+	}
+
+	function get_parentTile_openTag()
+	{
 		$style_tiles = 'deeds-tiles';
 		$view_mode = $this->props['view_mode'];
+		return '<div class="' . $style_tiles . ' ' . $view_mode . '">';
+	}
+
+	function get_parentTile_endTag() {
+		return '</div>';
+	}
+	function get_html_with_js() {
+		
 
 		wp_enqueue_style( 'tile-styles', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
 		wp_register_script( 'test-register', plugins_url('/divi-extension-example-master/test.js'));
 		wp_enqueue_script( 'test-divi-module', plugins_url('/divi-extension-example-master/test.js'), array('test-register'));
 		wp_localize_script( 'test-divi-module', 'testSettings', array('test-string' => $title,));
 		wp_print_scripts( 'test-divi-module');
-
-		$html = '
-			<div class="' . $style_section . '">
-    		<div class="content">' . $title . '</div>
-			</div>
-			<div class="' . $style_tiles . ' ' . $view_mode . '">';
+		$html =  $this->get_parentTile_openTag();
 		return $html;
 	}
 
@@ -154,10 +165,16 @@ class DICM_Parent extends ET_Builder_Module {
 
 		// Render module content
 		return $output = sprintf(
-			'<div>%1$s
-			%2$s</div></div>'
-			, $this->get_html_with_js()
+			'<div>
+			  %1$s
+				%2$s
+					%3$s
+				%4$s
+			</div>'
+			, $this->get_section_label_html()
+			, $this->get_parentTile_openTag()
 			, $this->content
+			, $this->get_parentTile_endTag()
 		);
 		// Render wrapper
 		// 3rd party module with no full VB support has to wrap its render output with $this->_render_module_wrapper().

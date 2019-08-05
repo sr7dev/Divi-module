@@ -311,7 +311,7 @@ class DICM_Child extends ET_Builder_Module {
 	 *
 	 * @return array
 	 */
-	function get_html($entireInfoPos, 
+	function get_tile_html($entireInfoPos, 
 									$sizeType, 
 									$showSportIconStyle, 
 									$extraInfoPos, 
@@ -422,7 +422,7 @@ class DICM_Child extends ET_Builder_Module {
 		wp_localize_script( 'test-child-divi-module', 'testChildSettings', array('test-string' => $pcontainer_id,));
 		wp_print_scripts( 'test-child-divi-module');
 
-		$html = $this->get_html(
+		$html = $this->get_tile_html(
 			$entireInfoPos, 
 			$sizeType, 
 			$showSportIconStyle, 
