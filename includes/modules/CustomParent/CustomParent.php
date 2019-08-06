@@ -37,6 +37,7 @@ class DICM_Parent extends ET_Builder_Module {
 					'section_label' 	=> esc_html__( 'Section Label', 'dicm_divi_custom_modules' ),
 					'tiles' 					=> esc_html__( 'Tiles', 'dicm_divi_custom_modules' ),
 					'algolia_setting' => esc_html__( 'Algolia Setting', 'dicm_divi_custom_modules' ),
+					'cloud_image'							=> esc_html( 'Cloud Image', 'dicm-divi-custom-modules' ),
 				),
 			),
 		);
@@ -114,6 +115,53 @@ class DICM_Parent extends ET_Builder_Module {
         'tab_slug'		  	=> 'general',
         'show_if'   			=> array( 'use_algolia' => 'on'),
       ),
+      // Cloud image tab
+			'use_resp_js_cloud_img' => array(
+				'label'           		=> esc_html__( 'Use Responsive JS Cloud Image', 'dicm_divi_custom_modules' ),
+				'type'            		=> 'yes_no_button',
+				'option_category' 		=> 'configuration',
+				'description'     		=> esc_html__( 'Use responsive js cloud image.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     		=> 'cloud_image',
+				'options'         		=> array(
+					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
+					'on' 		=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
+				),
+				'default'							=> 'on',
+			),
+			'resp_js_cloud_ratio' => array(
+				'label'           	=> esc_html__( 'Ratio', 'dicm_divi_custom_modules' ),
+				'type'            	=> 'text',
+				'option_category' 	=> 'configuration',
+				'description'     	=> esc_html__( 'Ratio.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'cloud_image',
+				'default'						=> '1',
+				'show_if'   				=> array( 'use_resp_js_cloud_img' => 'on'),
+			),
+			'load_init' => array(
+				'label'           	=> esc_html__( 'Load Init Function', 'dicm_divi_custom_modules' ),
+				'type'            	=> 'yes_no_button',
+				'option_category' 	=> 'configuration',
+				'description'     	=> esc_html__( 'Load init function.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'cloud_image',
+				'options'         	=> array(
+					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
+					'on' 		=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
+				),
+				'default'							=> 'on',
+				'show_if'   				=> array( 'use_resp_js_cloud_img' => 'on'),
+			),
+			'resp_init_again_call_delay' => array(
+				'label'           	=> esc_html__( 'Call again after delay time for JS Responsive Cloud Image', 'dicm_divi_custom_modules' ),
+				'type'            	=> 'text',
+				'option_category' 	=> 'configuration',
+				'description'     	=> esc_html__( 'Init again call delay.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'cloud_image',
+				'number_validation' => true,
+        'value_type'        => 'int',
+        'value_min'         => 0,
+				'show_if'   				=> array( 'use_resp_js_cloud_img' => 'on'),
+			),
+
 		);
 	}
 
@@ -174,6 +222,12 @@ class DICM_Parent extends ET_Builder_Module {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$instantSearch = $this->props['instantsearch'];
 		$container_id = $this->props['container_id'];
+		// could image tab
+		$useCloudImage = $this->props['use_resp_js_cloud_img'];
+		$respJSCloudRatio = $this->props['resp_js_cloud_ratio'];
+		$loadInit = $this->props['load_init'];
+		$respInitDelay = $this->props['resp_init_again_call_delay'];
+
 		return $javascript = "
 			document.addEventListener('DOMContentLoaded', function(event) 
 			{

@@ -48,7 +48,6 @@ class DICM_Child extends ET_Builder_Module {
 					'show_infomation' 				=> esc_html__( 'Show Information', 'dicm_divi_custom_modules' ),
 					'alignment'      					=> esc_html( 'Alignment', 'dicm-divi-custom-modules' ),
 					'size'       							=> esc_html( 'Size', 'dicm-divi-custom-modules' ),
-					'cloud_image'							=> esc_html( 'Cloud Image', 'dicm-divi-custom-modules' ),
 					'preload_animation'				=> esc_html( 'Preload Animation', 'dicm-divi-custom-modules' ),
 					'extra_setting'						=> esc_html( 'Extra Setting', 'dicm-divi-custom-modules' ),
 				),
@@ -219,53 +218,6 @@ class DICM_Child extends ET_Builder_Module {
 				'default_on_front'=> 'fixed-height',
 				'description'     => esc_html__( 'Select info here will appear inside the module.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     => 'size',
-			),
-
-			// Cloud image tab
-			'use_resp_js_cloud_img' => array(
-				'label'           		=> esc_html__( 'Use Responsive JS Cloud Image', 'dicm_divi_custom_modules' ),
-				'type'            		=> 'yes_no_button',
-				'option_category' 		=> 'configuration',
-				'description'     		=> esc_html__( 'Use responsive js cloud image.', 'dicm_divi_custom_modules' ),
-				'toggle_slug'     		=> 'cloud_image',
-				'options'         		=> array(
-					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
-					'on' 		=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
-				),
-				'default'							=> 'on',
-			),
-			'resp_js_cloud_ratio' => array(
-				'label'           	=> esc_html__( 'Ratio', 'dicm_divi_custom_modules' ),
-				'type'            	=> 'text',
-				'option_category' 	=> 'configuration',
-				'description'     	=> esc_html__( 'Ratio.', 'dicm_divi_custom_modules' ),
-				'toggle_slug'     	=> 'cloud_image',
-				'default'						=> '1',
-				'show_if'   				=> array( 'use_resp_js_cloud_img' => 'on'),
-			),
-			'load_init' => array(
-				'label'           	=> esc_html__( 'Load Init Function', 'dicm_divi_custom_modules' ),
-				'type'            	=> 'yes_no_button',
-				'option_category' 	=> 'configuration',
-				'description'     	=> esc_html__( 'Load init function.', 'dicm_divi_custom_modules' ),
-				'toggle_slug'     	=> 'cloud_image',
-				'options'         	=> array(
-					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
-					'on' 		=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
-				),
-				'default'							=> 'on',
-				'show_if'   				=> array( 'use_resp_js_cloud_img' => 'on'),
-			),
-			'resp_init_again_call_delay' => array(
-				'label'           	=> esc_html__( 'Call again after delay time for JS Responsive Cloud Image', 'dicm_divi_custom_modules' ),
-				'type'            	=> 'text',
-				'option_category' 	=> 'configuration',
-				'description'     	=> esc_html__( 'Init again call delay.', 'dicm_divi_custom_modules' ),
-				'toggle_slug'     	=> 'cloud_image',
-				'number_validation' => true,
-        'value_type'        => 'int',
-        'value_min'         => 0,
-				'show_if'   				=> array( 'use_resp_js_cloud_img' => 'on'),
 			),
 
 			// Preload animation tab
@@ -466,13 +418,15 @@ class DICM_Child extends ET_Builder_Module {
 		$parent_module = self::get_parent_modules('page')['dicm_parent'];
 		$pcontainer_id = $parent_module->shortcode_atts['container_id'];
 		$pinstantSearch = $parent_module->shortcode_atts['instantsearch'];
-		$useAlgolia = $parent_module->shortcode_atts['use_algolia'];
+		$puseAlgolia = $parent_module->shortcode_atts['use_algolia'];
+		$respJSCloudRatio = $parent_module->shortcode_atts['resp_js_cloud_ratio'];
+		$puseCloudImage = $parent_module->shortcode_atts['use_resp_js_cloud_img'];
 
 		// input information tab
 		$mainTitle = $this->props['main_title'];
 		$subTitle = $this->props['sub_title'];
 		$extraInfo = $this->props['extra_info'];
-		$useAlgoliaField = $useAlgolia;
+		$useAlgoliaField = $puseAlgolia;
 		$profile_img_src = $this->props['img_src'];
 		$emptyImage = $this->props['empty_img'];
 		
@@ -493,12 +447,7 @@ class DICM_Child extends ET_Builder_Module {
 		// size tab
 		$sizeType = $this->props['size_type'];
 
-		// could image tab
-		$useCloudImage = $this->props['use_resp_js_cloud_img'];
-		$respJSCloudRatio = $this->props['resp_js_cloud_ratio'];
-		$loadInit = $this->props['load_init'];
-		$respInitAgain = $this->props['resp_init_again_call_delay'];
-
+		
 		// preload animation tab
 		$preloadAnimationType = $this->props['animation_type'];
 
@@ -558,10 +507,10 @@ class DICM_Child extends ET_Builder_Module {
 			$emptyImage, 
 			$pinstantSearch,
 			$pcontainer_id,
-			$useCloudImage,
-			$respJSCloudRatio
+			$puseCloudImage,
+			$prespJSCloudRatio
 		);
-		
+
 		return ($useAlgoliaField === 'off' ? $html : $javascript);
 	}
 

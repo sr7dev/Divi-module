@@ -139,3 +139,11 @@ button.simplefavorite-button
   width: 106px;
   height: 100px;
 }
+
+img.ci-image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  padding: 0 !important;
+  height: 150px;
+} 
