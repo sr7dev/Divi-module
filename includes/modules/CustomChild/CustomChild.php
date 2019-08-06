@@ -8,7 +8,7 @@
  */
 class DICM_Child extends ET_Builder_Module {
 	// Module slug (also used as shortcode tag)
-	public $slug                     = 'dicm_child';
+	public $slug                     = 'unversal_child';
 
 	// Module item has to use `child` as its type property
 	public $type                     = 'child';
@@ -35,7 +35,7 @@ class DICM_Child extends ET_Builder_Module {
 
 		// Default label for module item. Basically if $this->child_title_var and $this->child_title_fallback_var
 		// attributes are empty, this default text will be used instead as item label
-		$this->advanced_setting_title_text = esc_html__( 'Item', 'et_builder' );
+		$this->advanced_setting_title_text = esc_html__( 'Deeds Tile', 'et_builder' );
 
 		// Module item's modal title
 		$this->settings_text = esc_html__( 'Item Settings', 'et_builder' );
@@ -263,24 +263,7 @@ class DICM_Child extends ET_Builder_Module {
 		);
 	}
 
-	/**
-	 * Module's advanced fields configuration
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array
-	 */
-	function get_advanced_fields_config() {
-		return array(
-			'button' => array(
-				'button' => array(
-					'label' => esc_html__( 'Button', 'et_builder' ),
-				),
-			),
-		);
-	}
-
-	/**
+	/*
 	 * Module's advanced fields configuration
 	 *
 	 * @return array

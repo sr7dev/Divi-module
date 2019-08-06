@@ -8,7 +8,7 @@
  */
 class DICM_Parent extends ET_Builder_Module {
 	// Module slug (also used as shortcode tag)
-	public $slug       = 'dicm_parent';
+	public $slug       = 'unversal_parent';
 
 	// Full Visual Builder support
 	public $vb_support = 'on';
@@ -37,7 +37,7 @@ class DICM_Parent extends ET_Builder_Module {
 					'section_label' 	=> esc_html__( 'Section Label', 'dicm_divi_custom_modules' ),
 					'tiles' 					=> esc_html__( 'Tiles', 'dicm_divi_custom_modules' ),
 					'algolia_setting' => esc_html__( 'Algolia Setting', 'dicm_divi_custom_modules' ),
-					'cloud_image'							=> esc_html( 'Cloud Image', 'dicm-divi-custom-modules' ),
+					'cloud_image'			=> esc_html( 'Cloud Image', 'dicm-divi-custom-modules' ),
 				),
 			),
 		);
