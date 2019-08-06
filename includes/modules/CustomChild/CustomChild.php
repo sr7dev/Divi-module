@@ -115,6 +115,14 @@ class DICM_Child extends ET_Builder_Module {
 				'default_on_front'	=> '/wp-content/uploads/2019/03/empty-face-athlete.svg',
 				'show_if'   				=> array( 'parentModule:use_algolia' => 'on'),
 			),
+			'link' => array(
+				'label'           	=> esc_html__( 'Link', 'dicm_divi_custom_modules' ),
+				'type'            	=> 'text',
+				'option_category' 	=> 'configuration',
+				'description'     	=> esc_html__( 'Link.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'input_information',
+				'default'						=> ''
+			),
 
 			// Show information tab
 			'show_fav_icon' => array(
@@ -294,6 +302,7 @@ class DICM_Child extends ET_Builder_Module {
 									$showMainTitleStyle,
 									$favor_img_src, 
 									$mainTitle, 
+									$link,
 									$sport_img_src, 
 									$extraInfo, 
 									$profile_img_src) {
@@ -307,26 +316,26 @@ class DICM_Child extends ET_Builder_Module {
 						</button>
 					</div>
 					<div class="deeds-tile-maintitle ' . $showMainTitleStyle . '">
-						<a href="#">
+						<a href="' . $link . '">
 						<span>' . $mainTitle . '</span>
 						</a>
 					</div>
 					<div class="tile-sport">
-						<a href="#">
+						<a href="' . $link . '">
 						<img src="' . $sport_img_src . '" alt="Kayaking">
 						</a>
 					</div>
 					</div>
 					<div class="deeds-tile-row">
 					<div class="tile-desc-info ">
-						<a href="#">
+						<a href="' . $link . '">
 						<span>' . $extraInfo . '</span>
 						</a>
 					</div>
 					</div>
 				</div>
 				<div class="deeds-tile-row-profile-img">
-					<a href="#" class="deeds-tile-row">
+					<a href="' . $link . '" class="deeds-tile-row">
 					<img id="Doguetebmx" class="profile-size" src="' . $profile_img_src . '">
 					</a>
 				</div>
@@ -336,21 +345,22 @@ class DICM_Child extends ET_Builder_Module {
 	}
 
 	function get_tile_js($entireInfoPos, 
-									$sizeType, 
-									$showSportIconStyle, 
-									$extraInfoPos, 
-									$showFavoriteIconStyle, 
-									$showMainTitleStyle,
-									$favor_img_src, 
-									$mainTitle, 
-									$sport_img_src,
-									$extraInfo, 
-									$profile_img_src,
-									$emptyImage, 
-									$instantSearch,
-									$container_id,
-									$useCloudImage,
-									$respJSCloudRatio) {
+			$sizeType, 
+			$showSportIconStyle, 
+			$extraInfoPos, 
+			$showFavoriteIconStyle, 
+			$showMainTitleStyle,
+			$favor_img_src, 
+			$mainTitle,
+			$link, 
+			$sport_img_src,
+			$extraInfo, 
+			$profile_img_src,
+			$emptyImage, 
+			$instantSearch,
+			$container_id,
+			$useCloudImage,
+			$respJSCloudRatio) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
 		$javascript = "start
@@ -362,6 +372,7 @@ class DICM_Child extends ET_Builder_Module {
 				var sport_img = get_blue_sport_img(get_hit_sport(hit));
 				var profile_img = hit.".$profile_img_src."
 					? hit." .$profile_img_src. ": (sport_img ? sport_img : '" .$emptyImage. "');
+				var link = ".( $link ? "hit.".$link : "''" ).";
 				var loading_img = '/wp-content/uploads/2019/06/preloading_img.svg';
 				var img_src_attr = 'src';
 				var img_src_val = get_cloudImage_url(profile_img);
@@ -394,26 +405,26 @@ class DICM_Child extends ET_Builder_Module {
 									favor_img_html +
 								'</div>' +
 								'<div class=\"deeds-tile-maintitle " . $showMainTitleStyle . "\">' +
-									'<a href=\"#\">' +
+									'<a href=\"' + link + '\">' +
 									'<span>' + hit.".$mainTitle." + '</span>' +
 									'</a>' +
 								'</div>' +
 								'<div class=\"tile-sport\">' +
-									'<a href=\"#\">' +
+									'<a href=\"' + link + '\">' +
 									'<img src=\"' + sport_img + '\" alt=\"' + get_hit_sport(hit) + '\">' +
 									'</a>' +
 								'</div>' +
 							'</div>' +
 							'<div class=\"deeds-tile-row\">' +
 								'<div class=\"tile-desc-info\">' +
-									'<a href=\"#\">' +
+									'<a href=\"' + link + '\">' +
 									'<span>' + hit." . $extraInfo . " + '</span>' +
 									'</a>' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
 						'<div class=\"deeds-tile-row-profile-img\">' +
-							'<a href=\"#\" class=\"deeds-tile-row\">' +
+							'<a href=\"' + link + '\" class=\"deeds-tile-row\">' +
 								'<img id=\"' + instagram_uername + '\" ' + img_src_attr + '=\"' + img_src_val + '\" ' + img_cisrc_attr + '=\"' + img_cisrc_val + '\" class=\"flex-photo ' + img_extra_class + '\"' + img_extra_attr + '>' +
 							'</a>' +
 						'</div>' +
@@ -442,6 +453,7 @@ class DICM_Child extends ET_Builder_Module {
 		$useAlgoliaField = $puseAlgolia;
 		$profile_img_src = $this->props['img_src'];
 		$emptyImage = $this->props['empty_img'];
+		$link = $this->props['link'];
 		
 		// show information
 		$showFavoriteIcon = $this->props['show_fav_icon'];
@@ -500,6 +512,7 @@ class DICM_Child extends ET_Builder_Module {
 			$showMainTitleStyle,
 			$favor_img_src, 
 			$mainTitle, 
+			$link,
 			$sport_img_src, 
 			$extraInfo, 
 			$profile_img_src
@@ -513,7 +526,8 @@ class DICM_Child extends ET_Builder_Module {
 			$showFavoriteIconStyle, 
 			$showMainTitleStyle,
 			$favor_img_src, 
-			$mainTitle, 
+			$mainTitle,
+			$link, 
 			$sport_img_src,
 			$extraInfo, 
 			$profile_img_src,

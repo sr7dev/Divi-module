@@ -229,19 +229,6 @@ class DICM_Parent extends ET_Builder_Module {
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
 		$instantSearch = $this->props['instantsearch'];
 		return $javascript = "
-			function get_cloudImage_subfix(org_url)
-			{
-
-				if (typeof (is_absolute_url) === \"function\" && is_absolute_url(org_url))
-				{
-					return org_url;
-				}
-				else
-				{
-					return \"https://www.deedsalone.com\" + \"/\" + org_url;
-				}
-			}
-
 			function get_cloudImage_url(org_url, isGray)
 			{
 			
@@ -382,7 +369,6 @@ class DICM_Parent extends ET_Builder_Module {
 		$childCount = substr_count($text, 'start');
 		$childString = '';
 		$childsString = '';
-		echo $childCount;
 		for( $i = 0; $i < $childCount; $i++ ) {
 			$startPos = strpos($text, 'start') + 5;
 			$endPos = strpos($text, ';end') + 1;
