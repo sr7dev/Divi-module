@@ -375,7 +375,6 @@ class DICM_Parent extends ET_Builder_Module {
 		$childCount = substr_count($text, 'start');
 		$childString = '';
 		$childsString = '';
-		echo $childCount;
 		for( $i = 0; $i < $childCount; $i++ ) {
 			$startPos = strpos($text, 'start') + 5;
 			$endPos = strpos($text, ';end') + 1;

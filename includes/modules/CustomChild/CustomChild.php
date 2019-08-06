@@ -222,16 +222,28 @@ class DICM_Child extends ET_Builder_Module {
 
 			// Preload animation tab
 			'animation_type' => array(
-				'label'           => esc_html__( 'Type', 'dicm_divi_custom_modules' ),
-				'type'            => 'select',
-				'option_category' => 'configuration',
-				'options'					=> array(
-					'1'		=> esc_html__( '1', 'dicm_divi_custom_modules' ),
-					'2'			=> esc_html__( '2', 'dicm_divi_custom_modules' ),
-					'3'						=> esc_html__( '3', 'dicm_divi_custom_modules' ),
-				),
-				'default'=> '1',
-				'description'     => esc_html__( 'Select preload animation.', 'dicm_divi_custom_modules' ),
+        'label'             => esc_html__( 'Type of Preload Animation', 'et_builder' ),
+        'type'              => 'select',
+        'option_category'   => 'layout',
+        'options'           => array(
+            'none'  => esc_html__( 'None', 'et_builder' ),
+            'imgfile' => esc_html__( 'Image file', 'et_builder'),
+            'rotateplane' => esc_html__( 'Rotate plane', 'et_builder' ),
+            'double-bounce' => esc_html__( 'Double Bounce', 'et_builder'),
+            'cube' => esc_html__( 'Cube', 'et_builder'),
+            'scaleout' => esc_html__( 'Scale Out', 'et_builder'),
+            'dot' => esc_html__( 'Dot', 'et_builder'),
+            'bounce' => esc_html__( 'Bounce', 'et_builder'),
+            'sk-circle' => esc_html__( 'SK Circle', 'et_builder'),
+            'sk-cube-grid' => esc_html__( 'SK Cube Grid', 'et_builder'),
+            'sk-fading-circle' => esc_html__( 'Sk-Fading-Circle', 'et_builder'),
+            'sk-cube' => esc_html__( 'SK Cube', 'et_builder'),
+        ),
+        'description'        => esc_html__( 'Select Type of Preload Animation', 'et_builder' ),
+        'default_on_front'   => 'bounce',
+        'show_if' => array(
+          'parentModule:use_resp_js_cloud_img'=> array('on'),
+        ),
 				'toggle_slug'     => 'preload_animation',
 			),
 
