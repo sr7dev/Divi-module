@@ -69,14 +69,25 @@ class DICM_Child extends ET_Builder_Module {
 				'label'           	=> esc_html__( 'Use Algolia Field', 'dicm_divi_custom_modules' ),
 				'type'            	=> 'yes_no_button',
 				'option_category' 	=> 'configuration',
-				'description'     	=> esc_html__( 'Algolia field will use or not.', 'dicm_divi_custom_modules' ),
 				'options'         	=> array(
 					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
 					'on' 		=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
 				),
 				'toggle_slug'     	=> 'input_information',
 				'default'						=> 'on',
-				'show_if'   				=> array( 'parentModule:use_algolia' => 'on'),
+				'tab_slug'		  		=> 'general',
+			),
+			'use_special_main_title' => array(
+				'label'           	=> esc_html__( 'Use Special Main Title', 'dicm_divi_custom_modules' ),
+				'type'            	=> 'yes_no_button',
+				'option_category' 	=> 'configuration',
+				'description'     	=> esc_html__( 'Special main title field will use or not.', 'dicm_divi_custom_modules' ),
+				'options'         	=> array(
+					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
+					'on' 		=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
+				),
+				'toggle_slug'     	=> 'input_information',
+				'default'						=> 'off',
 			),
 			'main_title' => array(
 				'label'           	=> esc_html__( 'Main Title', 'dicm_divi_custom_modules' ),
@@ -84,6 +95,35 @@ class DICM_Child extends ET_Builder_Module {
 				'option_category' 	=> 'configuration',
 				'description'     	=> esc_html__( 'Input main title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
+				'show_if'   				=> array( 'use_special_main_title' => 'off'),
+			),
+			'special_main_title' => array(
+				'label'           	=> esc_html__( 'Special Main Title', 'dicm_divi_custom_modules' ),
+				'type'              => 'select',
+        'option_category'   => 'layout',
+        'options'           => array(
+            'first_name'  => esc_html__( 'First Name', 'et_builder' ),
+            'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
+            'event_data' 	=> esc_html__( 'Event Data', 'et_builder' ),
+        ),	
+				'description'     	=> esc_html__( 'Input special main title.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'input_information',
+				'show_if'   				=> array( 
+					'parentModule:use_algolia' 	=> 'on',
+					'use_special_main_title'		=> 'on',
+				),
+			),
+			'use_special_sub_title' => array(
+				'label'           	=> esc_html__( 'Use Special Sub Title', 'dicm_divi_custom_modules' ),
+				'type'            	=> 'yes_no_button',
+				'option_category' 	=> 'configuration',
+				'description'     	=> esc_html__( 'Special sub title field will use or not.', 'dicm_divi_custom_modules' ),
+				'options'         	=> array(
+					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
+					'on' 		=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
+				),
+				'toggle_slug'     	=> 'input_information',
+				'default'						=> 'off',
 			),
 			'sub_title' => array(
 				'label'           	=> esc_html__( 'Sub Title', 'dicm_divi_custom_modules' ),
@@ -91,6 +131,23 @@ class DICM_Child extends ET_Builder_Module {
 				'option_category' 	=> 'configuration',
 				'description'     	=> esc_html__( 'Input sub title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
+				'show_if'   				=> array( 'use_special_sub_title' => 'off'),
+			),
+			'special_sub_title' => array(
+				'label'           	=> esc_html__( 'Special Sub Title', 'dicm_divi_custom_modules' ),
+				'type'              => 'select',
+        'option_category'   => 'layout',
+        'options'           => array(
+            'first_name'  => esc_html__( 'First Name', 'et_builder' ),
+            'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
+            'event_data' 	=> esc_html__( 'Event Data', 'et_builder' ),
+        ),	
+        'description'     	=> esc_html__( 'Input special sub title.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'input_information',
+				'show_if'   				=> array( 
+					'parentModule:use_algolia' 	=> 'on',
+					'use_special_sub_title'		=> 'on',
+				),
 			),
 			'extra_info' => array(
 				'label'           	=> esc_html__( 'Extra Info', 'dicm_divi_custom_modules' ),
@@ -439,6 +496,10 @@ class DICM_Child extends ET_Builder_Module {
 		$profile_img_src = $this->props['img_src'];
 		$emptyImage = $this->props['empty_img'];
 		$link = $this->props['link'];
+		$useSpecialMainTitle = $this->['use_special_main_title'];
+		$specialMainTitle = $this->['special_main_title'];
+		$useSpecialSubTitle = $this->['use_special_sub_title'];
+		$specialSubTitle = $this->['special_sub_title'];
 		
 		// show information
 		$showFavoriteIcon = $this->props['show_fav_icon'];
