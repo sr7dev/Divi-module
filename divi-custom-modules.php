@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Divi Custom Modules
+Plugin Name: Deeds Universal Tile Module
 Plugin URI:  https://elegantthemes.com
 Description: Custom module examples for Divi built using create-divi-extension
 Version:     1.0.0
@@ -11,18 +11,18 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: dicm_divi_custom_modules
 Domain Path: /languages
 
-Divi Custom Modules is free software: you can redistribute it and/or modify
+Deeds Universal Tile Module is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or
 any later version.
 
-Divi Custom Modules is distributed in the hope that it will be useful,
+Deeds Universal Tile Module is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Divi Custom Modules. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
+along with Deeds Universal Tile Module. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 */
 
 

@@ -8,7 +8,7 @@
  */
 class DICM_Parent extends ET_Builder_Module {
 	// Module slug (also used as shortcode tag)
-	public $slug       = 'unversal_parent';
+	public $slug       = 'dicm_parent';
 
 	// Full Visual Builder support
 	public $vb_support = 'on';
@@ -37,7 +37,7 @@ class DICM_Parent extends ET_Builder_Module {
 					'section_label' 	=> esc_html__( 'Section Label', 'dicm_divi_custom_modules' ),
 					'tiles' 					=> esc_html__( 'Tiles', 'dicm_divi_custom_modules' ),
 					'algolia_setting' => esc_html__( 'Algolia Setting', 'dicm_divi_custom_modules' ),
-					'cloud_image'			=> esc_html( 'Cloud Image', 'dicm-divi-custom-modules' ),
+					'cloud_image'							=> esc_html( 'Cloud Image', 'dicm-divi-custom-modules' ),
 				),
 			),
 		);
@@ -202,7 +202,7 @@ class DICM_Parent extends ET_Builder_Module {
 		
 		return 
 			'<div class="' . $sectionLabel_style . '">
-  			<div class="content">' . $section_label . '</div>
+  				<div class="content">' . $section_label . '</div>
 			</div>';
 	}
 
@@ -220,37 +220,15 @@ class DICM_Parent extends ET_Builder_Module {
 	function get_js_start()
 	{
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
-		$instantSearch = $this->props['instantsearch'];
+		
 		$container_id = $this->props['container_id'];
 		// could image tab
 		$useCloudImage = $this->props['use_resp_js_cloud_img'];
 		$respJSCloudRatio = $this->props['resp_js_cloud_ratio'];
 		$loadInit = $this->props['load_init'];
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
-
+		$instantSearch = $this->props['instantsearch'];
 		return $javascript = "
-			document.addEventListener('DOMContentLoaded', function(event) 
-			{
-				var user_id = ". (is_user_logged_in() ? get_current_user_id() : -1) . "
-				if (Number.isInteger(user_id))
-					user_id = user_id.toString();
-				".$instantSearch.".on('render', function() {	
-					function load_js_responsive_cloudimage()
-					{
-		 			  var cloudimgResponsive" .$container_id. " = new window.CIResponsive({
-							token: 'amdgjadcen',
-							lazyLoading: true,
-							exactSize: true,
-							imgLoadingAnimation: false,
-					  });
-					  window.lazySizes.init();
-					}
-					load_js_responsive_cloudimage();
-					".($respInitDelay ?	'setTimeout(load_js_responsive_cloudimage,' .$respInitDelay.'");'
-					:'')
-               ."
-				});
-			});
 			function get_cloudImage_subfix(org_url)
 			{
 
@@ -309,25 +287,55 @@ class DICM_Parent extends ET_Builder_Module {
 				{
 					return cloud_img_pre + \"_deeds_\" + org_url;
 				}
-			}	
+			}
+			console.log('Tiles module loading');
+			document.addEventListener('DOMContentLoaded', function(event) 
+			{
+				
+				var user_id = ". (is_user_logged_in() ? get_current_user_id() : -1) . "
+				if (Number.isInteger(user_id))
+					user_id = user_id.toString();
+				console.log('Tiles module Lendering');
+				".$instantSearch.".on('render', function() {	
+					console.log('Tiles module Lendered');
+					function load_js_responsive_cloudimage()
+					{
+		 			  var cloudimgResponsive" .$container_id. " = new window.CIResponsive({
+							token: 'amdgjadcen',
+							lazyLoading: true,
+							exactSize: true,
+							imgLoadingAnimation: false,
+					  });
+					  window.lazySizes.init();
+					  console.log('Loaded cloud image js');
+					}
+					console.log('Loading cloud image js');
+					load_js_responsive_cloudimage();
+
+					".($respInitDelay ?	'setTimeout(load_js_responsive_cloudimage,' .$respInitDelay.'");'
+					:'')
+               ."
+				});
+			});
 			searchDiscover.addWidget({
-		  	render: function(data) {
-			    var \$hits = [];
-			    var is_empty = 1;
+				render: function(data) {
+					var \$hits = [];
+					var is_empty = 1;
 		";
 	}
 	function get_js_end()
 	{
+		$instantSearch = $this->props['instantsearch'];
 		return $javascript = "
-					\$hits.push('</div>');
-
-			   	if (is_empty) {
-			      document.getElementById('hits').innerHTML = 'No result found.';
-			    } else {
-			      document.getElementById('hits').innerHTML = \$hits.join('');
-			    }
-			  },
+					if (is_empty) {
+						document.getElementById('hits').innerHTML = 'No result found.';
+					} else {
+						document.getElementById('hits').innerHTML = \$hits.join('');
+					}
+					console.log('End1');
+				}
 			});
+			console.log('End2');
 		";
 	}
 
@@ -337,7 +345,7 @@ class DICM_Parent extends ET_Builder_Module {
 		
 		return '
 			$hits.push(\'<div class="' . $sectionLabel_style . '">\');
-  		$hits.push(\'<div class="content">' . $section_label . '</div>\');
+  			$hits.push(\'<div class="content">' . $section_label . '</div>\');
 			$hits.push(\'</div>\');
 			';
 	}
@@ -356,12 +364,11 @@ class DICM_Parent extends ET_Builder_Module {
 			$hits.push(\'</div>\');
 			';
 	}
-	function get_html() {
-		
 
-		wp_enqueue_style( 'tile-styles', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
-		wp_register_script( 'test-register', plugins_url('/divi-extension-example-master/test.js'));
-		wp_enqueue_script( 'test-divi-module', plugins_url('/divi-extension-example-master/test.js'), array('test-register'));
+	function get_html() {
+		wp_enqueue_style( 'tile-styles', plugins_url('/UniversalTileModule/styles/deeds-tile.css') );
+		wp_register_script( 'test-register', plugins_url('/UniversalTileModule/test.js'));
+		wp_enqueue_script( 'test-divi-module', plugins_url('/UniversalTileModule/test.js'), array('test-register'));
 		wp_localize_script( 'test-divi-module', 'testSettings', array('test-string' => $title,));
 		wp_print_scripts( 'test-divi-module');
 		$container_id = $this->props['container_id'];
@@ -375,6 +382,7 @@ class DICM_Parent extends ET_Builder_Module {
 		$childCount = substr_count($text, 'start');
 		$childString = '';
 		$childsString = '';
+		echo $childCount;
 		for( $i = 0; $i < $childCount; $i++ ) {
 			$startPos = strpos($text, 'start') + 5;
 			$endPos = strpos($text, ';end') + 1;
@@ -418,7 +426,8 @@ class DICM_Parent extends ET_Builder_Module {
 		} else {
 			return $output = sprintf(
 				'<script src="https://cdn.scaleflex.it/filerobot/js-cloudimage-responsive/lazysizes.min.js"></script>
-		  	<script src="https://cdn.scaleflex.it/filerobot/js-cloudimage-responsive/v1.1.0.min.js"></script>
+		  		<script src="https://cdn.scaleflex.it/filerobot/js-cloudimage-responsive/v1.1.0.min.js"></script>
+				%7$s
 				<script>
 					%5$s
 						%1$s
@@ -427,7 +436,7 @@ class DICM_Parent extends ET_Builder_Module {
 						%4$s
 					%6$s
 				</script>
-				%7$s
+				
 				'
 				, $this->get_algolia_section_label_html()
 				, $this->get_algolia_parentTile_openTag()

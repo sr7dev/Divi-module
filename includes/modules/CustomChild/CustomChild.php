@@ -8,7 +8,7 @@
  */
 class DICM_Child extends ET_Builder_Module {
 	// Module slug (also used as shortcode tag)
-	public $slug                     = 'unversal_child';
+	public $slug                     = 'dicm_child';
 
 	// Module item has to use `child` as its type property
 	public $type                     = 'child';
@@ -35,7 +35,7 @@ class DICM_Child extends ET_Builder_Module {
 
 		// Default label for module item. Basically if $this->child_title_var and $this->child_title_fallback_var
 		// attributes are empty, this default text will be used instead as item label
-		$this->advanced_setting_title_text = esc_html__( 'Deeds Tile', 'et_builder' );
+		$this->advanced_setting_title_text = esc_html__( 'Item', 'et_builder' );
 
 		// Module item's modal title
 		$this->settings_text = esc_html__( 'Item Settings', 'et_builder' );
@@ -245,6 +245,7 @@ class DICM_Child extends ET_Builder_Module {
           'parentModule:use_resp_js_cloud_img'=> array('on'),
         ),
 				'toggle_slug'     => 'preload_animation',
+				'tab_slug'        	=> 'general',
 			),
 
 			// Extra setting tab
@@ -263,7 +264,24 @@ class DICM_Child extends ET_Builder_Module {
 		);
 	}
 
-	/*
+	/**
+	 * Module's advanced fields configuration
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	function get_advanced_fields_config() {
+		return array(
+			'button' => array(
+				'button' => array(
+					'label' => esc_html__( 'Button', 'et_builder' ),
+				),
+			),
+		);
+	}
+
+	/**
 	 * Module's advanced fields configuration
 	 *
 	 * @return array
@@ -281,40 +299,40 @@ class DICM_Child extends ET_Builder_Module {
 									$profile_img_src) {
 		$output = 
 			'<div class="deeds-tile ' . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . '">
-	      <div class="deeds-tile-desc ' . $extraInfoPos . '">
-	        <div class="deeds-tile-row">
-	          <div class="deeds-tile-fav">
-	            <button class="simplefavorite-button">
-	              <img class="favor_img ' . $showFavoriteIconStyle . '" src="' . $favor_img_src . '" />
-	            </button>
-	          </div>
-	          <div class="deeds-tile-maintitle ' . $showMainTitleStyle . '">
-	            <a href="#">
-	              <span>' . $mainTitle . '</span>
-	            </a>
-	          </div>
-	          <div class="tile-sport">
-	            <a href="#">
-	              <img src="' . $sport_img_src . '" alt="Kayaking">
-	            </a>
-	          </div>
-	        </div>
-	        <div class="deeds-tile-row">
-	          <div class="tile-desc-info ">
-	            <a href="#">
-	              <span>' . $extraInfo . '</span>
-	            </a>
-	          </div>
-	        </div>
-	      </div>
-	      <div class="deeds-tile-row-profile-img">
-	        <a href="#" class="deeds-tile-row">
-	          <img id="Doguetebmx" class="profile-size" src="' . $profile_img_src . '">
-	        </a>
-	      </div>
-	    </div>';
+				<div class="deeds-tile-desc ' . $extraInfoPos . '">
+					<div class="deeds-tile-row">
+					<div class="deeds-tile-fav">
+						<button class="simplefavorite-button">
+						<img class="favor_img ' . $showFavoriteIconStyle . '" src="' . $favor_img_src . '" />
+						</button>
+					</div>
+					<div class="deeds-tile-maintitle ' . $showMainTitleStyle . '">
+						<a href="#">
+						<span>' . $mainTitle . '</span>
+						</a>
+					</div>
+					<div class="tile-sport">
+						<a href="#">
+						<img src="' . $sport_img_src . '" alt="Kayaking">
+						</a>
+					</div>
+					</div>
+					<div class="deeds-tile-row">
+					<div class="tile-desc-info ">
+						<a href="#">
+						<span>' . $extraInfo . '</span>
+						</a>
+					</div>
+					</div>
+				</div>
+				<div class="deeds-tile-row-profile-img">
+					<a href="#" class="deeds-tile-row">
+					<img id="Doguetebmx" class="profile-size" src="' . $profile_img_src . '">
+					</a>
+				</div>
+			</div>';
 
-	  return $output;
+	  	return $output;
 	}
 
 	function get_tile_js($entireInfoPos, 
@@ -335,73 +353,73 @@ class DICM_Child extends ET_Builder_Module {
 									$respJSCloudRatio) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
-		$javascript = "
-			startdata.results.hits.forEach(function(hit, index, array) {
+		$javascript = "start
+			data.results.hits.forEach(function(hit, index, array) {
 				is_empty = 0;
 				var instagram_uername= '';//lastWordCapitalized(hit.instagramurl);
 				var is_fav = hit.favorite_users && (hit.favorite_users.indexOf(user_id) >=0 )? 1 : 0;
 				var favor_img_html = get_favbutton_html_by_instant2(user_id, " .$instantSearch. ", hit.objectID, is_fav);
 				var sport_img = get_blue_sport_img(get_hit_sport(hit));
-	      var profile_img = hit.".$profile_img_src."
-	        ? hit." .$profile_img_src. ": (sport_img ? sport_img : '" .$emptyImage. "');
-	      var loading_img = '/wp-content/uploads/2019/06/preloading_img.svg';
-			  var img_src_attr = 'src';
-			  var img_src_val = get_cloudImage_url(profile_img);
-			  var img_extra_attr = '';
-			  var img_extra_class = '';
-			  var extra_item_class = '';
-			  
-			  if ('".$useCloudImage. "' === 'on')
-			  {
-      	  img_src_attr = 'src';
-				  img_src_val = loading_img;
-				  if (!is_empty_field(profile_img))
-				  {	
+				var profile_img = hit.".$profile_img_src."
+					? hit." .$profile_img_src. ": (sport_img ? sport_img : '" .$emptyImage. "');
+				var loading_img = '/wp-content/uploads/2019/06/preloading_img.svg';
+				var img_src_attr = 'src';
+				var img_src_val = get_cloudImage_url(profile_img);
+				var img_extra_attr = '';
+				var img_extra_class = '';
+				var extra_item_class = '';
+				
+				if ('".$useCloudImage. "' === 'on')
+				{
+					img_src_attr = 'src';
+					img_src_val = loading_img;
+					if (!is_empty_field(profile_img))
+					{	
 						img_cisrc_attr = 'ci-src';
 						img_cisrc_val = get_cloudImage_subfix(profile_img);
-				  }
-				  else
-				  {
+					}
+					else
+					{
 						img_src_attr = 'src';
 						img_src_val = get_cloudImage_fullparam_url(profile_img, \"\", '400x250', \"\");
 						img_extra_class = 'empty_img';
-				  }
-				  img_extra_attr = 'style=\"\" ratio=\"".$respJSCloudRatio."\"';
-			  }
-	      \$hits.push(
-	        '<div class=\"deeds-tile " . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
-			      '<div class=\"deeds-tile-desc " . $extraInfoPos . "\">' +
-			        '<div class=\"deeds-tile-row\">' +
-			          '<div class=\"deeds-tile-fav " . $showFavoriteIconStyle . "\">' +
-			            favor_img_html +
-			          '</div>' +
-			          '<div class=\"deeds-tile-maintitle " . $showMainTitleStyle . "\">' +
-			            '<a href=\"#\">' +
-			              '<span>' + hit.".$mainTitle." + '</span>' +
-			            '</a>' +
-			          '</div>' +
-			          '<div class=\"tile-sport\">' +
-			            '<a href=\"#\">' +
-			              '<img src=\"' + sport_img + '\" alt=\"' + get_hit_sport(hit) + '\">' +
-			            '</a>' +
-			          '</div>' +
-			        '</div>' +
-			        '<div class=\"deeds-tile-row\">' +
-			          '<div class=\"tile-desc-info\">' +
-			            '<a href=\"#\">' +
-			              '<span>' + hit." . $extraInfo . " + '</span>' +
-			            '</a>' +
-			          '</div>' +
-			        '</div>' +
-			      '</div>' +
-			      '<div class=\"deeds-tile-row-profile-img\">' +
-			        '<a href=\"#\" class=\"deeds-tile-row\">' +
-			          '<img id=\"' + instagram_uername + '\" ' + img_src_attr + '=\"' + img_src_val + '\" ' + img_cisrc_attr + '=\"' + img_cisrc_val + '\" class=\"flex-photo ' + img_extra_class + '\"' + img_extra_attr + '>' +
-			        '</a>' +
-			      '</div>' +
-			    '</div>'
-	      );
-	    });end
+					}
+					img_extra_attr = 'style=\"\" ratio=\"".$respJSCloudRatio."\"';
+				}
+				\$hits.push(
+					'<div class=\"deeds-tile " . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
+						'<div class=\"deeds-tile-desc " . $extraInfoPos . "\">' +
+							'<div class=\"deeds-tile-row\">' +
+								'<div class=\"deeds-tile-fav " . $showFavoriteIconStyle . "\">' +
+									favor_img_html +
+								'</div>' +
+								'<div class=\"deeds-tile-maintitle " . $showMainTitleStyle . "\">' +
+									'<a href=\"#\">' +
+									'<span>' + hit.".$mainTitle." + '</span>' +
+									'</a>' +
+								'</div>' +
+								'<div class=\"tile-sport\">' +
+									'<a href=\"#\">' +
+									'<img src=\"' + sport_img + '\" alt=\"' + get_hit_sport(hit) + '\">' +
+									'</a>' +
+								'</div>' +
+							'</div>' +
+							'<div class=\"deeds-tile-row\">' +
+								'<div class=\"tile-desc-info\">' +
+									'<a href=\"#\">' +
+									'<span>' + hit." . $extraInfo . " + '</span>' +
+									'</a>' +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+						'<div class=\"deeds-tile-row-profile-img\">' +
+							'<a href=\"#\" class=\"deeds-tile-row\">' +
+								'<img id=\"' + instagram_uername + '\" ' + img_src_attr + '=\"' + img_src_val + '\" ' + img_cisrc_attr + '=\"' + img_cisrc_val + '\" class=\"flex-photo ' + img_extra_class + '\"' + img_extra_attr + '>' +
+							'</a>' +
+						'</div>' +
+					'</div>'
+				);
+			});end
 		";
 		return $javascript;
 	}
@@ -459,9 +477,9 @@ class DICM_Child extends ET_Builder_Module {
 		$favor_img_src = 'https://devdeeds.wpengine.com/wp-content/uploads/2019/03/favorite-icon-empty.svg';
 		
 		// load javascript
-		wp_enqueue_style( 'tile-style', plugins_url('/divi-extension-example-master/styles/deeds-tile.css') );
-		wp_register_script( 'deeds-tile-register', plugins_url('/divi-extension-example-master/deeds-tile.js'));
-		wp_enqueue_script( 'deeds-tile-divi-module', plugins_url('/divi-extension-example-master/deeds-tile.js'), array('deeds-tile-register'));
+		wp_enqueue_style( 'tile-style', plugins_url('/UniversalTileModule/styles/deeds-tile.css') );
+		wp_register_script( 'deeds-tile-register', plugins_url('/UniversalTileModule/deeds-tile.js'));
+		wp_enqueue_script( 'deeds-tile-divi-module', plugins_url('/UniversalTileModule/deeds-tile.js'), array('deeds-tile-register'));
 		wp_localize_script( 'deeds-tile-divi-module', 'deedsTileSettings', 
 			array('cloudImgGrayPrefix' 	=> $this->cloud_img_gray_prefix(),
 						'cloudImgPrefix'			=> $this->cloud_img_prefix(),
