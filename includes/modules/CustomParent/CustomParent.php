@@ -295,27 +295,27 @@ class DICM_Parent extends ET_Builder_Module {
 				var user_id = ". (is_user_logged_in() ? get_current_user_id() : -1) . "
 				if (Number.isInteger(user_id))
 					user_id = user_id.toString();
-				console.log('Tiles module Lendering');
-				".$instantSearch.".on('render', function() {	
-					console.log('Tiles module Lendered');
-					function load_js_responsive_cloudimage()
-					{
-		 			  var cloudimgResponsive" .$container_id. " = new window.CIResponsive({
-							token: 'amdgjadcen',
-							lazyLoading: true,
-							exactSize: true,
-							imgLoadingAnimation: false,
-					  });
-					  window.lazySizes.init();
-					  console.log('Loaded cloud image js');
-					}
-					console.log('Loading cloud image js');
-					load_js_responsive_cloudimage();
+			});
+			console.log('Tiles module Lendering');
+			".$instantSearch.".on('render', function() {	
+				console.log('Tiles module Lendered');
+				function load_js_responsive_cloudimage()
+				{
+					var cloudimgResponsive" .$container_id. " = new window.CIResponsive({
+						token: 'amdgjadcen',
+						lazyLoading: true,
+						exactSize: true,
+						imgLoadingAnimation: false,
+					});
+					window.lazySizes.init();
+					console.log('Loaded cloud image js');
+				}
+				console.log('Loading cloud image js');
+				load_js_responsive_cloudimage();
 
-					".($respInitDelay ?	'setTimeout(load_js_responsive_cloudimage,' .$respInitDelay.'");'
-					:'')
-               ."
-				});
+				".($respInitDelay ?	'setTimeout(load_js_responsive_cloudimage,' .$respInitDelay.'");'
+				:'')
+			."
 			});
 			searchDiscover.addWidget({
 				render: function(data) {
