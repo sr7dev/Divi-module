@@ -370,33 +370,17 @@ class DICM_Child extends ET_Builder_Module {
 				var is_fav = hit.favorite_users && (hit.favorite_users.indexOf(user_id) >=0 )? 1 : 0;
 				var favor_img_html = get_favbutton_html_by_instant2(user_id, " .$instantSearch. ", hit.objectID, is_fav);
 				var sport_img = get_blue_sport_img(get_hit_sport(hit));
-				var profile_img = hit.".$profile_img_src."
-					? hit." .$profile_img_src. ": (sport_img ? sport_img : '" .$emptyImage. "');
+				var hit_img = hit.".$profile_img_src.";
+				var hit_empty_img = '".$emptyImage."';
 				var link = ".( $link ? "hit.".$link : "''" ).";
-				var loading_img = '/wp-content/uploads/2019/06/preloading_img.svg';
-				var img_src_attr = 'src';
-				var img_src_val = get_cloudImage_url(profile_img);
-				var img_extra_attr = '';
-				var img_extra_class = '';
-				var extra_item_class = '';
+				var hit_img_html = get_hit_img_html(
+					hit,
+					hit_img,
+					hit_empty_img,
+					'".$preload_type."',
+					'".($useCloudImage == "on" ? "1" : "0")."',
+					'".($respJSCloudRatio ? $respJSCloudRatio : "") ."');
 				
-				if ('".$useCloudImage. "' === 'on')
-				{
-					img_src_attr = 'src';
-					img_src_val = loading_img;
-					if (!is_empty_field(profile_img))
-					{	
-						img_cisrc_attr = 'ci-src';
-						img_cisrc_val = get_cloudImage_subfix(profile_img);
-					}
-					else
-					{
-						img_src_attr = 'src';
-						img_src_val = get_cloudImage_fullparam_url(profile_img, \"\", '400x250', \"\");
-						img_extra_class = 'empty_img';
-					}
-					img_extra_attr = 'style=\"\" ratio=\"".$respJSCloudRatio."\"';
-				}
 				\$hits.push(
 					'<div class=\"deeds-tile " . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
 						'<div class=\"deeds-tile-desc " . $extraInfoPos . "\">' +
@@ -425,7 +409,7 @@ class DICM_Child extends ET_Builder_Module {
 						'</div>' +
 						'<div class=\"deeds-tile-row-profile-img\">' +
 							'<a href=\"' + link + '\" class=\"deeds-tile-row\">' +
-								'<img id=\"' + instagram_uername + '\" ' + img_src_attr + '=\"' + img_src_val + '\" ' + img_cisrc_attr + '=\"' + img_cisrc_val + '\" class=\"flex-photo ' + img_extra_class + '\"' + img_extra_attr + '>' +
+								hit_img_html +
 							'</a>' +
 						'</div>' +
 					'</div>'

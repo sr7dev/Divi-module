@@ -304,7 +304,7 @@ class DICM_Parent extends ET_Builder_Module {
 				:'')
 			."
 			});
-			searchDiscover.addWidget({
+			".$instantSearch.".addWidget({
 				render: function(data) {
 					var \$hits = [];
 					var is_empty = 1;
