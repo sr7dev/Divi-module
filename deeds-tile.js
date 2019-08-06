@@ -13,7 +13,7 @@ function get_cloudImage_subfix(org_url)
 function get_preloading_html(type)
 {
 	var preloadingHTML = '';
-
+	
 	switch(type)
 	{
 		case 'none':

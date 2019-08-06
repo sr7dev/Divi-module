@@ -128,6 +128,7 @@ button.simplefavorite-button
 {
   padding:3px;
   border: 1px solid #ccc;
+  position: relative;
 }
 .hide-favorite-icon,
 .hide-main-title,

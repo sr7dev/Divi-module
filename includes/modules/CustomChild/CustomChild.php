@@ -360,7 +360,8 @@ class DICM_Child extends ET_Builder_Module {
 			$instantSearch,
 			$container_id,
 			$useCloudImage,
-			$respJSCloudRatio) {
+			$respJSCloudRatio,
+			$preload_type) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
 		$javascript = "start
@@ -519,7 +520,8 @@ class DICM_Child extends ET_Builder_Module {
 			$pinstantSearch,
 			$pcontainer_id,
 			$puseCloudImage,
-			$prespJSCloudRatio
+			$prespJSCloudRatio,
+			$preloadAnimationType
 		);
 
 		return ($useAlgoliaField === 'off' ? $html : $javascript);
