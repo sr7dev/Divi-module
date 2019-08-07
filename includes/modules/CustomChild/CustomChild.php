@@ -74,7 +74,6 @@ class DICM_Child extends ET_Builder_Module {
 					'on' 		=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
 				),
 				'toggle_slug'     	=> 'input_information',
-				'default'						=> 'on',
 				'tab_slug'		  		=> 'general',
 			),
 			'use_special_main_title' => array(
@@ -95,7 +94,9 @@ class DICM_Child extends ET_Builder_Module {
 				'option_category' 	=> 'configuration',
 				'description'     	=> esc_html__( 'Input main title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
-				'show_if'   				=> array( 'use_special_main_title' => 'off'),
+				'show_if'   				=> array(
+					'use_special_main_title' => 'off'
+				),
 			),
 			'special_main_title' => array(
 				'label'           	=> esc_html__( 'Special Main Title', 'dicm_divi_custom_modules' ),
@@ -104,13 +105,14 @@ class DICM_Child extends ET_Builder_Module {
         'options'           => array(
             'first_name'  => esc_html__( 'First Name', 'et_builder' ),
             'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
-            'event_data' 	=> esc_html__( 'Event Data', 'et_builder' ),
+            'event_date' 	=> esc_html__( 'Event Date', 'et_builder' ),
         ),	
 				'description'     	=> esc_html__( 'Input special main title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
-				'show_if'   				=> array( 
-					'parentModule:use_algolia' 	=> 'on',
-					'use_special_main_title'		=> 'on',
+				'default'					=> 'first_name',
+				'show_if'   				=> array(
+					'use_algolia_field' 	=> 'on',
+					'use_special_main_title' => 'on'
 				),
 			),
 			'use_special_sub_title' => array(
@@ -131,7 +133,7 @@ class DICM_Child extends ET_Builder_Module {
 				'option_category' 	=> 'configuration',
 				'description'     	=> esc_html__( 'Input sub title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
-				'show_if'   				=> array( 'use_special_sub_title' => 'off'),
+				'show_if_not'   				=> array( 'use_special_sub_title' => 'on'),
 			),
 			'special_sub_title' => array(
 				'label'           	=> esc_html__( 'Special Sub Title', 'dicm_divi_custom_modules' ),
@@ -144,6 +146,7 @@ class DICM_Child extends ET_Builder_Module {
         ),	
         'description'     	=> esc_html__( 'Input special sub title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
+				'default'						=> 'last_name',
 				'show_if'   				=> array( 
 					'parentModule:use_algolia' 	=> 'on',
 					'use_special_sub_title'		=> 'on',
@@ -400,18 +403,35 @@ class DICM_Child extends ET_Builder_Module {
 
 	  	return $output;
 	}
+	function get_algolia_field($use_special_field, $common_field, $special_field ) {
+		if ($use_special_field == 'on' ) {
+			echo "use special field", $special_field, ";";
+			return $special_field ? $special_field : '""';
+		} else {
 
-	function get_tile_js($entireInfoPos, 
+			return $common_field ? 'hit.'.$common_field : '""';
+		}
+
+	}
+	function get_tile_js(
+			$entireInfoPos, 
 			$sizeType, 
 			$showSportIconStyle, 
 			$extraInfoPos, 
 			$showFavoriteIconStyle, 
 			$showMainTitleStyle,
 			$favor_img_src, 
+			$useSpecialMainTitle, 
 			$mainTitle,
+			$specialMainTitle,
+			$useSpecialSubTitle,
+			$subTitle,
+			$specialSubTitle,
 			$link, 
 			$sport_img_src,
-			$extraInfo, 
+			$useSpecialextraInfo,
+			$extraInfo,
+			$specialextraInfo, 
 			$profile_img_src,
 			$emptyImage, 
 			$instantSearch,
@@ -421,7 +441,9 @@ class DICM_Child extends ET_Builder_Module {
 			$preload_type) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
-		$javascript = "start
+		echo "SepecialMainTitle", $specialMainTitle;
+		$javascript = "
+			<child-js-start-mark>
 			data.results.hits.forEach(function(hit, index, array) {
 				is_empty = 0;
 				var instagram_uername= '';//lastWordCapitalized(hit.instagramurl);
@@ -431,6 +453,22 @@ class DICM_Child extends ET_Builder_Module {
 				var hit_img = hit.".$profile_img_src.";
 				var hit_empty_img = '".$emptyImage."';
 				var link = ".( $link ? "hit.".$link : "''" ).";
+				var first_name = '';
+				var last_name = '';
+				var event_date = '';
+
+				if ( hit.post_title ) {
+					var lastIndex = hit.post_title.lastIndexOf(' ');
+					first_name = hit.post_title.substring(0, lastIndex);
+					last_name = remove_first_occurrence(hit.post_title, first_name);
+				}
+
+				if (hit.start && hit.end) {
+					event_date = (hit.start == hit.end ? 
+						deeds_date_format(hit.start) :
+						deeds_date_format(hit.start) + ' - ' + deeds_date_format(hit.end));
+				}
+
 				var hit_img_html = get_hit_img_html(
 					hit,
 					hit_img,
@@ -448,7 +486,8 @@ class DICM_Child extends ET_Builder_Module {
 								'</div>' +
 								'<div class=\"deeds-tile-maintitle " . $showMainTitleStyle . "\">' +
 									'<a href=\"' + link + '\">' +
-									'<span>' + hit.".$mainTitle." + '</span>' +
+									'<p>' + ". $this->get_algolia_field($useSpecialMainTitle, $mainTitle, $specialMainTitle) . " + '</p>' +
+									'<p>' + ". $this->get_algolia_field($useSpecialSubTitle, $subTitle, $specialSubTitle) . " + '</p>' +
 									'</a>' +
 								'</div>' +
 								'<div class=\"tile-sport\">' +
@@ -460,7 +499,7 @@ class DICM_Child extends ET_Builder_Module {
 							'<div class=\"deeds-tile-row\">' +
 								'<div class=\"tile-desc-info\">' +
 									'<a href=\"' + link + '\">' +
-									'<span>' + hit." . $extraInfo . " + '</span>' +
+									'<span>' +". $this->get_algolia_field($useSpecialextraInfo, $extraInfo, $specialextraInfo) . " + '</span>' +
 									'</a>' +
 								'</div>' +
 							'</div>' +
@@ -472,7 +511,8 @@ class DICM_Child extends ET_Builder_Module {
 						'</div>' +
 					'</div>'
 				);
-			});end
+			});
+			</child-js-end-mark>
 		";
 		return $javascript;
 	}
@@ -496,11 +536,11 @@ class DICM_Child extends ET_Builder_Module {
 		$profile_img_src = $this->props['img_src'];
 		$emptyImage = $this->props['empty_img'];
 		$link = $this->props['link'];
-		$useSpecialMainTitle = $this->['use_special_main_title'];
-		$specialMainTitle = $this->['special_main_title'];
-		$useSpecialSubTitle = $this->['use_special_sub_title'];
-		$specialSubTitle = $this->['special_sub_title'];
-		
+		$useSpecialMainTitle = $this->props['use_special_main_title'];
+		$specialMainTitle = $this->props['special_main_title'];
+		$useSpecialSubTitle = $this->props['use_special_sub_title'];
+		$specialSubTitle = $this->props['special_sub_title'];
+		echo "SepecialMainTitle", $specialMainTitle;
 		// show information
 		$showFavoriteIcon = $this->props['show_fav_icon'];
 		$showMainTitle = $this->props['show_main_title'];
@@ -525,6 +565,7 @@ class DICM_Child extends ET_Builder_Module {
 		// extra setting tab
 		$useInstogram = $this->props['use_instogram'];
 
+		// 
 		$showMainTitleStyle = ( $showMainTitle == 'on' ? '' : 'hide-main-title');
 		$showSubTitleStyle = ( $showSubTitle == 'on' ? '' : 'hide-sub-title');
 		$showSportIconStyle = ( $showSportIcon == 'on' ? '' : 'hide-sport-icon');
@@ -550,20 +591,20 @@ class DICM_Child extends ET_Builder_Module {
 		wp_print_scripts( 'deeds-tile-divi-module');
 
 		$html = $this->get_tile_html(
-			$entireInfoPos, 
-			$sizeType, 
-			$showSportIconStyle, 
-			$extraInfoPos, 
+			$entireInfoPos,
+			$sizeType,
+			$showSportIconStyle,
+			$extraInfoPos,
 			$showFavoriteIconStyle, 
 			$showMainTitleStyle,
-			$favor_img_src, 
-			$mainTitle, 
+			$favor_img_src,
+			$mainTitle,
 			$link,
-			$sport_img_src, 
-			$extraInfo, 
+			$sport_img_src,
+			$extraInfo,
 			$profile_img_src
 		);
-		
+		;
 		$javascript = $this->get_tile_js(
 			$entireInfoPos, 
 			$sizeType, 
@@ -571,11 +612,18 @@ class DICM_Child extends ET_Builder_Module {
 			$extraInfoPos, 
 			$showFavoriteIconStyle, 
 			$showMainTitleStyle,
-			$favor_img_src, 
+			$favor_img_src,
+			$useSpecialMainTitle, 
 			$mainTitle,
+			$specialMainTitle,
+			$useSpecialSubTitle,
+			$subTitle,
+			$specialSubTitle,
 			$link, 
 			$sport_img_src,
-			$extraInfo, 
+			$useSpecialextraInfo,
+			$extraInfo,
+			$specialextraInfo,
 			$profile_img_src,
 			$emptyImage, 
 			$pinstantSearch,

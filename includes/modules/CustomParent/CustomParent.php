@@ -312,12 +312,13 @@ class DICM_Parent extends ET_Builder_Module {
 	}
 	function get_js_end()
 	{
+		$container_id = $this->props['container_id'];
 		$instantSearch = $this->props['instantsearch'];
 		return $javascript = "
 					if (is_empty) {
-						document.getElementById('hits').innerHTML = 'No result found.';
+						document.getElementById('". $container_id . "').innerHTML = 'No result found.';
 					} else {
-						document.getElementById('hits').innerHTML = \$hits.join('');
+						document.getElementById('". $container_id ."').innerHTML = \$hits.join('');
 					}
 					console.log('End1');
 				}
@@ -366,12 +367,12 @@ class DICM_Parent extends ET_Builder_Module {
 	}
 	function remove_first_last_lines($text)
 	{
-		$childCount = substr_count($text, 'start');
+		$childCount = substr_count($text, '<child-js-start-mark>');
 		$childString = '';
 		$childsString = '';
 		for( $i = 0; $i < $childCount; $i++ ) {
-			$startPos = strpos($text, 'start') + 5;
-			$endPos = strpos($text, ';end') + 1;
+			$startPos = strpos($text, '<child-js-start-mark>') + strlen('<child-js-start-mark>');
+			$endPos = strpos($text, '</child-js-end-mark>');
 			$childString = substr($text, $startPos, $endPos-$startPos);
 			$text = substr($text, $endPos);
 			$childsString .= $childString;

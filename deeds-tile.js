@@ -161,3 +161,40 @@ function get_hit_img_html(hit, hit_img, hit_empty_img, preloading_type, use_resp
 	 return hit_img_html + preloading_html;
 }
 
+function deeds_date_format (date) {
+	var dateObject = new Date(date);
+	var date_str = dateObject.toLocaleDateString("en-US");
+	var date_year = date_str.slice(-4);
+	var cur_year = new Date().getFullYear();
+	date_str = date_str.slice(0, -5);
+	if (date_year != cur_year)
+		date_str = date_str + '/' + date_year.slice(-2);
+
+	return date_str;
+}
+
+function remove_first_occurrence(str, searchstr)
+{
+	var index = str.indexOf(searchstr);
+	if (index === -1) {
+		return str;
+	}
+	return str.slice(0, index) + str.slice(index + searchstr.length);
+}
+
+function get_blue_sport_img(sport) {
+	var sport_img = { "bmx":"/wp-content/uploads/2019/04/bmx-blue.svg",
+			"skiing":"/wp-content/uploads/2019/04/skiing-blue.svg",
+			"surfing":"/wp-content/uploads/2019/04/surfing-blue.svg",
+			"skateboarding":"/wp-content/uploads/2019/04/skateboarding-blue.svg",
+			"mountain":"/wp-content/uploads/2019/04/mountain-biking-blue.svg",
+			"snowboarding":"/wp-content/uploads/2019/04/snowboarding-blue.svg",
+			"motocross":"/wp-content/uploads/2019/04/motocross-blue.svg",
+			"climbing":"/wp-content/uploads/2019/04/climbing-blue.svg",
+			"kayaking":"/wp-content/uploads/2019/04/kayaking-blue.svg",
+			"ultra" : "/wp-content/uploads/2019/04/ultra-running-blue.svg"
+			 };
+	sport = sport ? (Array.isArray(sport) ? sport[0] : sport) : "";
+	sport = sport ? sport.split(" ")[0].toLowerCase() : "";
+	return (sport && sport_img[sport] ? sport_img[sport] : "/wp-content/uploads/2019/05/sport-blue-footer.svg");
+}
