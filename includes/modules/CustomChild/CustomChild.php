@@ -204,10 +204,10 @@ class DICM_Child extends ET_Builder_Module {
 				'label'           	=> esc_html__( 'Empty Image', 'dicm_divi_custom_modules' ),
 				'type'            	=> 'text',
 				'option_category' 	=> 'configuration',
-				'description'     	=> esc_html__( 'Show image if empty image source.', 'dicm_divi_custom_modules' ),
+				'description'     	=> esc_html__( 'Show image if empty image source.\n You can use \'sport\' or \'sports\' for using sport image for empty tile.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
 				'default_on_front'	=> '/wp-content/uploads/2019/03/empty-face-athlete.svg',
-				'show_if'   				=> array( 'parentModule:use_algolia' => 'on'),
+				'show_if'   				=> array( 'use_algolia_field' 	=> 'on'),
 			),
 			'link' => array(
 				'label'           	=> esc_html__( 'Link', 'dicm_divi_custom_modules' ),
@@ -343,9 +343,9 @@ class DICM_Child extends ET_Builder_Module {
         ),
         'description'        => esc_html__( 'Select Type of Preload Animation', 'et_builder' ),
         'default_on_front'   => 'bounce',
-        'show_if' => array(
+        /*'show_if' => array(
           'parentModule:use_resp_js_cloud_img'=> array('on'),
-        ),
+        ),*/
 				'toggle_slug'     => 'preload_animation',
 				'tab_slug'        	=> 'general',
 			),
@@ -439,7 +439,7 @@ class DICM_Child extends ET_Builder_Module {
 	}
 	function get_algolia_field($use_special_field, $common_field, $special_field ) {
 		if ($use_special_field == 'on' ) {
-			echo "use special field", $special_field, ";";
+			
 			return $special_field ? $special_field : '""';
 		} else {
 
@@ -475,7 +475,7 @@ class DICM_Child extends ET_Builder_Module {
 			$preload_type) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
-		echo "SepecialMainTitle", $specialMainTitle;
+		
 		$javascript = "
 			<child-js-start-mark>
 			data.results.hits.forEach(function(hit, index, array) {
@@ -502,7 +502,10 @@ class DICM_Child extends ET_Builder_Module {
 						deeds_date_format(hit.start) :
 						deeds_date_format(hit.start) + ' - ' + deeds_date_format(hit.end));
 				}
-
+				if ( hit_empty_img == 'sports' || hit_empty_img == 'sport')
+				{
+					hit_empty_img = sport_img;
+				}
 				var hit_img_html = get_hit_img_html(
 					hit,
 					hit_img,
@@ -576,7 +579,7 @@ class DICM_Child extends ET_Builder_Module {
 		$specialSubTitle = $this->props['special_sub_title'];
 		$useSpecialextraInfo = $this->props['use_special_extra_info'];
 		$specialextraInfo = $this->props['special_extra_info'];
-		echo "SepecialMainTitle", $specialMainTitle;
+		
 		// show information
 		$showFavoriteIcon = $this->props['show_fav_icon'];
 		$showMainTitle = $this->props['show_main_title'];
@@ -688,7 +691,7 @@ class DICM_Child extends ET_Builder_Module {
 
 		// Render module content
 		if ($useAlgolia === 'off'){
-			echo "off";
+			
 			return sprintf(
 				'<div class="dicm-content">%1$s</div>',
 				$this->get_html_with_js()
