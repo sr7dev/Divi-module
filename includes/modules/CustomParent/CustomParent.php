@@ -410,6 +410,7 @@ class DICM_Parent extends ET_Builder_Module {
 		// Module specific props added on $this->get_fields()
 		$title = $this->props['title'];
 		$use_algolia = $this->props['use_algolia'];
+		
 		// Render module content
 		if ($use_algolia === 'off') {
 			return $output = sprintf(

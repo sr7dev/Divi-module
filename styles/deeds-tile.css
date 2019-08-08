@@ -129,6 +129,11 @@ button.simplefavorite-button
   border: 1px solid #ccc;
   position: relative;
 }
+.deeds-tile-row-profile-img > *
+{
+    max-width: 100%;
+    max-height: 100%;
+}
 .hide-favorite-icon,
 .hide-main-title,
 .hide-sub-title,

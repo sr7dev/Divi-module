@@ -54,7 +54,7 @@ class DICM_Child extends ET_Builder_Module {
 			),
 		);
 
-		$this->main_css_element = '%%order_class%%.et_pb_promo';
+		$this->main_css_element = '%%order_class%%.deeds-tile  .deeds-tile-row-profile-img';
 	}
 
 
@@ -328,28 +328,28 @@ class DICM_Child extends ET_Builder_Module {
 
 			// Preload animation tab
 			'animation_type' => array(
-        'label'             => esc_html__( 'Type of Preload Animation', 'et_builder' ),
-        'type'              => 'select',
-        'option_category'   => 'layout',
-        'options'           => array(
-            'none'  => esc_html__( 'None', 'et_builder' ),
-            'imgfile' => esc_html__( 'Image file', 'et_builder'),
-            'rotateplane' => esc_html__( 'Rotate plane', 'et_builder' ),
-            'double-bounce' => esc_html__( 'Double Bounce', 'et_builder'),
-            'cube' => esc_html__( 'Cube', 'et_builder'),
-            'scaleout' => esc_html__( 'Scale Out', 'et_builder'),
-            'dot' => esc_html__( 'Dot', 'et_builder'),
-            'bounce' => esc_html__( 'Bounce', 'et_builder'),
-            'sk-circle' => esc_html__( 'SK Circle', 'et_builder'),
-            'sk-cube-grid' => esc_html__( 'SK Cube Grid', 'et_builder'),
-            'sk-fading-circle' => esc_html__( 'Sk-Fading-Circle', 'et_builder'),
-            'sk-cube' => esc_html__( 'SK Cube', 'et_builder'),
-        ),
-        'description'        => esc_html__( 'Select Type of Preload Animation', 'et_builder' ),
-        'default_on_front'   => 'bounce',
-        /*'show_if' => array(
-          'parentModule:use_resp_js_cloud_img'=> array('on'),
-        ),*/
+				'label'             => esc_html__( 'Type of Preload Animation', 'et_builder' ),
+				'type'              => 'select',
+				'option_category'   => 'layout',
+				'options'           => array(
+					'none'  => esc_html__( 'None', 'et_builder' ),
+					'imgfile' => esc_html__( 'Image file', 'et_builder'),
+					'rotateplane' => esc_html__( 'Rotate plane', 'et_builder' ),
+					'double-bounce' => esc_html__( 'Double Bounce', 'et_builder'),
+					'cube' => esc_html__( 'Cube', 'et_builder'),
+					'scaleout' => esc_html__( 'Scale Out', 'et_builder'),
+					'dot' => esc_html__( 'Dot', 'et_builder'),
+					'bounce' => esc_html__( 'Bounce', 'et_builder'),
+					'sk-circle' => esc_html__( 'SK Circle', 'et_builder'),
+					'sk-cube-grid' => esc_html__( 'SK Cube Grid', 'et_builder'),
+					'sk-fading-circle' => esc_html__( 'Sk-Fading-Circle', 'et_builder'),
+					'sk-cube' => esc_html__( 'SK Cube', 'et_builder'),
+				),
+				'description'        => esc_html__( 'Select Type of Preload Animation', 'et_builder' ),
+				'default_on_front'   => 'bounce',
+				/*'show_if' => array(
+				  'parentModule:use_resp_js_cloud_img'=> array('on'),
+				),*/
 				'toggle_slug'     => 'preload_animation',
 				'tab_slug'        	=> 'general',
 			),
@@ -379,24 +379,84 @@ class DICM_Child extends ET_Builder_Module {
 	 */
 	function get_advanced_fields_config() {
 		return array(
-			'background'     => false,
-			'borders'        => false,
-			'box_shadow'     => false,
-			'button'         => false,
-			'text'         	 => false,
-			'transform'      => false,
-			'filters'        => false,
-			'fonts'          => false,
-			'margin_padding' => false,
-			'max_width' => array(
-				'toggle_title'    => esc_html__( 'Width100', 'dicm_divi_custom_modules' ),
-				'css' => array(
-					'main'		  => ".deeds-tile",
-				),
+			'text'           => false,
+			'background'     => array(
 				'options' => array(
-					'max_width' => array(
-						'depends_show_if' => 'off',
+					'background_color' => array(
+						'default'          => et_builder_accent_color(),
 					),
+				),
+				'css'		=> array (
+					'main' => '%%order_class%%.deeds-tile',
+					),
+			),
+			'borders'        => array(
+				'default' => array(
+					'css'      => array(
+						'main' => array (
+							'border_radii' => '%%order_class%%.deeds-tile',
+							'border_styles' => '%%order_class%%.deeds-tile',
+						)
+					),
+					'defaults' => array(
+						'border_radii' => 'on|3px|3px|3px|3px',
+					),
+					'label_prefix'	=> 'Tile',
+				),
+			),
+			'box_shadow'     => array(
+				'default' => array(
+					'css' => array(
+						'main' => '%%order_class%%.deeds-tile',
+					),
+				),
+			),
+			'filters'        => array(
+				'child_filters_target' => array(
+					'tab_slug'    => 'advanced',
+					'toggle_slug' => 'image',
+				),
+				'css'                  => array(
+					'main' => '%%order_class%%.deeds-tile',
+				),
+			),
+			'fonts'          => array(
+				'header2' => array(
+					'css'          => array(
+						'main'      => "%%order_class%%.deeds-tile h2",
+						'important' => 'all',
+					),
+					'label'        => esc_html__( 'Main Title', 'simp-simple' ),
+					'disable_toggle' => false,
+				),
+				'header3' => array(
+					'css'          => array(
+						'main'      => "%%order_class%%.deeds-tile h3",
+						'important' => 'all',
+					),
+					'label'        => esc_html__( 'Sub Title', 'simp-simple' ),
+					'disable_toggle' => false,
+				),
+				'body' => array(
+					'css'          => array(
+						'main'      => "%%order_class%%.deeds-tile p",
+						'important' => 'all',
+					),
+					'label'        => esc_html__( 'Extra Title', 'simp-simple' ),
+					'disable_toggle' => false,
+				),
+			),
+			'margin_padding' => array(
+				'css' => array(
+					'main' => "%%order_class%%.deeds-tile",
+					'important' => 'all',
+				),
+			),
+			'max_width'      => array(
+				'toggle_title'    => esc_html__( 'Profile Image Size', 'dicm_divi_custom_'),
+				'css' => array(
+					'main' => "%%order_class%%.deeds-tile .deeds-tile-row-profile-img",
+					'important' => 'all',
 				),
 			),
 		);
@@ -407,20 +467,22 @@ class DICM_Child extends ET_Builder_Module {
 	 *
 	 * @return array
 	 */
-	function get_tile_html($entireInfoPos, 
-									$sizeType, 
-									$showSportIconStyle, 
-									$extraInfoPos, 
-									$showFavoriteIconStyle, 
-									$showMainTitleStyle,
-									$favor_img_src, 
-									$mainTitle, 
-									$link,
-									$sport_img_src, 
-									$extraInfo, 
-									$profile_img_src) {
+	function get_tile_html(
+		$module_class,
+		$entireInfoPos, 
+		$sizeType, 
+		$showSportIconStyle, 
+		$extraInfoPos, 
+		$showFavoriteIconStyle, 
+		$showMainTitleStyle,
+		$favor_img_src, 
+		$mainTitle, 
+		$link,
+		$sport_img_src, 
+		$extraInfo, 
+		$profile_img_src) {
 		$output = 
-			'<div class="deeds-tile ' . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . '">
+			'<div class="deeds-tile ' . $module_class.  ' '. $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . '">
 				<div class="deeds-tile-desc ' . $extraInfoPos . '">
 					<div class="deeds-tile-row">
 					<div class="deeds-tile-fav">
@@ -449,7 +511,7 @@ class DICM_Child extends ET_Builder_Module {
 				</div>
 				<div class="deeds-tile-row-profile-img">
 					<a href="' . $link . '" class="deeds-tile-row">
-					<img id="Doguetebmx" class="profile-size" src="' . $profile_img_src . '">
+					<img class="profile-size" src="' . $profile_img_src . '">
 					</a>
 				</div>
 			</div>';
@@ -467,32 +529,33 @@ class DICM_Child extends ET_Builder_Module {
 
 	}
 	function get_tile_js(
-			$entireInfoPos, 
-			$sizeType, 
-			$showSportIconStyle, 
-			$extraInfoPos, 
-			$showFavoriteIconStyle, 
-			$showMainTitleStyle,
-			$favor_img_src, 
-			$useSpecialMainTitle, 
-			$mainTitle,
-			$specialMainTitle,
-			$useSpecialSubTitle,
-			$subTitle,
-			$specialSubTitle,
-			$link, 
-			$sport_img_src,
-			$useSpecialextraInfo,
-			$extraInfo,
-			$specialextraInfo, 
-			$profile_img_src,
-			$emptyImage, 
-			$instantSearch,
-			$container_id,
-			$useCloudImage,
-			$respJSCloudRatio,
-			$preload_type,
-			$useInstagram) {
+		$module_class,
+		$entireInfoPos, 
+		$sizeType, 
+		$showSportIconStyle, 
+		$extraInfoPos, 
+		$showFavoriteIconStyle, 
+		$showMainTitleStyle,
+		$favor_img_src, 
+		$useSpecialMainTitle, 
+		$mainTitle,
+		$specialMainTitle,
+		$useSpecialSubTitle,
+		$subTitle,
+		$specialSubTitle,
+		$link, 
+		$sport_img_src,
+		$useSpecialextraInfo,
+		$extraInfo,
+		$specialextraInfo, 
+		$profile_img_src,
+		$emptyImage, 
+		$instantSearch,
+		$container_id,
+		$useCloudImage,
+		$respJSCloudRatio,
+		$preload_type,
+		$useInstagram) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
 		
@@ -536,7 +599,7 @@ class DICM_Child extends ET_Builder_Module {
 					instagram_uername);
 				
 				\$hits.push(
-					'<div class=\"deeds-tile " . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
+					'<div class=\"deeds-tile " . $module_class. ' '. $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
 						'<div class=\"deeds-tile-desc " . $extraInfoPos . "\">' +
 							'<div class=\"deeds-tile-row\">' +
 								'<div class=\"deeds-tile-fav " . $showFavoriteIconStyle . "\">' +
@@ -544,8 +607,8 @@ class DICM_Child extends ET_Builder_Module {
 								'</div>' +
 								'<div class=\"deeds-tile-maintitle " . $showMainTitleStyle . "\">' +
 									'<a href=\"' + link + '\">' +
-									'<p>' + ". $this->get_algolia_field($useSpecialMainTitle, $mainTitle, $specialMainTitle) . " + '</p>' +
-									'<p>' + ". $this->get_algolia_field($useSpecialSubTitle, $subTitle, $specialSubTitle) . " + '</p>' +
+									'<<h2>' + ". $this->get_algolia_field($useSpecialMainTitle, $mainTitle, $specialMainTitle) . " + '</h2>' +
+									'<h3>' + ". $this->get_algolia_field($useSpecialSubTitle, $subTitle, $specialSubTitle) . " + '</h3>' +
 									'</a>' +
 								'</div>' +
 								'<div class=\"tile-sport\">' +
@@ -557,7 +620,7 @@ class DICM_Child extends ET_Builder_Module {
 							'<div class=\"deeds-tile-row\">' +
 								'<div class=\"tile-desc-info\">' +
 									'<a href=\"' + link + '\">' +
-									'<span>' +". $this->get_algolia_field($useSpecialextraInfo, $extraInfo, $specialextraInfo) . " + '</span>' +
+									'<p>' +". $this->get_algolia_field($useSpecialextraInfo, $extraInfo, $specialextraInfo) . " + '</p>' +
 									'</a>' +
 								'</div>' +
 							'</div>' +
@@ -576,7 +639,7 @@ class DICM_Child extends ET_Builder_Module {
 		return $javascript;
 	}
 
-	function get_html_with_js() {
+	function get_html_with_js($module_class) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 
 		// get att value from parent module
@@ -652,6 +715,7 @@ class DICM_Child extends ET_Builder_Module {
 		wp_print_scripts( 'deeds-tile-divi-module');
 
 		$html = $this->get_tile_html(
+			$module_class,
 			$entireInfoPos,
 			$sizeType,
 			$showSportIconStyle,
@@ -665,8 +729,9 @@ class DICM_Child extends ET_Builder_Module {
 			$extraInfo,
 			$profile_img_src
 		);
-		;
+		
 		$javascript = $this->get_tile_js(
+			$module_class,
 			$entireInfoPos, 
 			$sizeType, 
 			$showSportIconStyle, 
@@ -711,18 +776,19 @@ class DICM_Child extends ET_Builder_Module {
 	 */
 	function render( $attrs, $content = null, $render_slug ) {
 		$useAlgolia = $this->props['use_algolia_field'];
+		$module_class = $this->module_classname( $render_slug );
 
 		// Render module content
 		if ($useAlgolia === 'off'){
 			
 			return sprintf(
 				'<div class="dicm-content">%1$s</div>',
-				$this->get_html_with_js()
+				$this->get_html_with_js($module_class)
 			);	
 		} else {
 			return sprintf(
 				'%1$s',
-				$this->get_html_with_js()
+				$this->get_html_with_js($module_class)
 			);
 		}
 		
