@@ -104,12 +104,12 @@ class DICM_Child extends ET_Builder_Module {
 			'special_main_title' => array(
 				'label'           	=> esc_html__( 'Special Main Title', 'dicm_divi_custom_modules' ),
 				'type'              => 'select',
-        'option_category'   => 'layout',
-        'options'           => array(
-            'first_name'  => esc_html__( 'First Name', 'et_builder' ),
-            'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
-            'event_date' 	=> esc_html__( 'Event Date', 'et_builder' ),
-        ),	
+				'option_category'   => 'layout',
+				'options'           => array(
+					'first_name'  => esc_html__( 'First Name', 'et_builder' ),
+					'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
+					'event_date' 	=> esc_html__( 'Event Date', 'et_builder' ),
+				),	
 				'description'     	=> esc_html__( 'Input special main title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
 				'default'					=> 'first_name',
@@ -143,11 +143,11 @@ class DICM_Child extends ET_Builder_Module {
 			'special_sub_title' => array(
 				'label'           	=> esc_html__( 'Special Sub Title', 'dicm_divi_custom_modules' ),
 				'type'              => 'select',
-        'option_category'   => 'layout',
-        'options'           => array(
-            'first_name'  => esc_html__( 'First Name', 'et_builder' ),
-            'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
-            'event_date' 	=> esc_html__( 'Event Date', 'et_builder' ),
+				'option_category'   => 'layout',
+				'options'           => array(
+					'first_name'  => esc_html__( 'First Name', 'et_builder' ),
+					'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
+					'event_date' 	=> esc_html__( 'Event Date', 'et_builder' ),
         ),	
         'description'     	=> esc_html__( 'Input special sub title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
@@ -182,18 +182,18 @@ class DICM_Child extends ET_Builder_Module {
 			'special_extra_info' => array(
 				'label'           	=> esc_html__( 'Special Extra Info', 'dicm_divi_custom_modules' ),
 				'type'              => 'select',
-        'option_category'   => 'layout',
-        'options'           => array(
-            'first_name'  => esc_html__( 'First Name', 'et_builder' ),
-            'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
-            'event_date' 	=> esc_html__( 'Event Date', 'et_builder' ),
-        ),	
-        'description'     	=> esc_html__( 'Input special extra info.', 'dicm_divi_custom_modules' ),
-				'toggle_slug'     	=> 'input_information',
-				'default'						=> 'last_name',
-				'show_if'   				=> array(
-					'use_algolia_field' 	=> 'on',
-					'use_special_extra_info' => 'on'
+				'option_category'   => 'layout',
+				'options'           => array(
+					'first_name'  => esc_html__( 'First Name', 'et_builder' ),
+					'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
+					'event_date' 	=> esc_html__( 'Event Date', 'et_builder' ),
+				),	
+				'description'     	=> esc_html__( 'Input special extra info.', 'dicm_divi_custom_modules' ),
+						'toggle_slug'     	=> 'input_information',
+						'default'						=> 'last_name',
+						'show_if'   				=> array(
+							'use_algolia_field' 	=> 'on',
+							'use_special_extra_info' => 'on'
 				),
 			),
 			'img_src' => array(
@@ -202,6 +202,7 @@ class DICM_Child extends ET_Builder_Module {
 				'option_category' 	=> 'configuration',
 				'description'     	=> esc_html__( 'Input image source.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
+				'default'			=> 'profile_img',
 			),
 			'empty_img' => array(
 				'label'           	=> esc_html__( 'Empty Image', 'dicm_divi_custom_modules' ),
@@ -209,7 +210,7 @@ class DICM_Child extends ET_Builder_Module {
 				'option_category' 	=> 'configuration',
 				'description'     	=> esc_html__( 'Show image if empty image source.\n You can use \'sport\' or \'sports\' for using sport image for empty tile.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
-				'default_on_front'	=> '/wp-content/uploads/2019/03/empty-face-athlete.svg',
+				'default_on_front'	=> 'sports',
 				'show_if'   				=> array( 'use_algolia_field' 	=> 'on'),
 			),
 			'link' => array(
@@ -218,7 +219,7 @@ class DICM_Child extends ET_Builder_Module {
 				'option_category' 	=> 'configuration',
 				'description'     	=> esc_html__( 'Link.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
-				'default'						=> ''
+				'default'						=> 'permalink'
 			),
 
 			// Show information tab
@@ -354,11 +355,11 @@ class DICM_Child extends ET_Builder_Module {
 			),
 
 			// Extra setting tab
-			'use_instogram' => array(
-				'label'           		=> esc_html__( 'Use Instogram For Empty Photo', 'dicm_divi_custom_modules' ),
+			'use_Instagram' => array(
+				'label'           		=> esc_html__( 'Use Instagram For Empty Photo', 'dicm_divi_custom_modules' ),
 				'type'            		=> 'yes_no_button',
 				'option_category' 		=> 'configuration',
-				'description'     		=> esc_html__( 'Use instogram for empty photo.', 'dicm_divi_custom_modules' ),
+				'description'     		=> esc_html__( 'Use Instagram for empty photo.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     		=> 'extra_setting',
 				'options'         		=> array(
 					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
@@ -490,15 +491,16 @@ class DICM_Child extends ET_Builder_Module {
 			$container_id,
 			$useCloudImage,
 			$respJSCloudRatio,
-			$preload_type) {
+			$preload_type,
+			$useInstagram) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
 		
 		$javascript = "
-			<child-js-start-mark>
+			{CHILD_JS_START}
 			data.results.hits.forEach(function(hit, index, array) {
 				is_empty = 0;
-				var instagram_uername= '';//lastWordCapitalized(hit.instagramurl);
+				var instagram_uername= ".($useInstagram ? "lastWordCapitalized(hit.instagramurl)" : "''").";
 				var is_fav = hit.favorite_users && (hit.favorite_users.indexOf(user_id) >=0 )? 1 : 0;
 				var favor_img_html = get_favbutton_html_by_instant2(user_id, " .$instantSearch. ", hit.objectID, is_fav);
 				var sport_img = get_blue_sport_img(get_hit_sport(hit));
@@ -530,7 +532,8 @@ class DICM_Child extends ET_Builder_Module {
 					hit_empty_img,
 					'".$preload_type."',
 					'".($useCloudImage == "on" ? "1" : "0")."',
-					'".($respJSCloudRatio ? $respJSCloudRatio : "") ."');
+					'".($respJSCloudRatio ? $respJSCloudRatio : "") ."',
+					instagram_uername);
 				
 				\$hits.push(
 					'<div class=\"deeds-tile " . $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
@@ -566,8 +569,9 @@ class DICM_Child extends ET_Builder_Module {
 						'</div>' +
 					'</div>'
 				);
+
 			});
-			</child-js-end-mark>
+			{CHILD_JS_END}
 		";
 		return $javascript;
 	}
@@ -620,7 +624,7 @@ class DICM_Child extends ET_Builder_Module {
 		$preloadAnimationType = $this->props['animation_type'];
 
 		// extra setting tab
-		$useInstogram = $this->props['use_instogram'];
+		$useInstagram = $this->props['use_Instagram'];
 
 		// 
 		$showMainTitleStyle = ( $showMainTitle == 'on' ? '' : 'hide-main-title');
@@ -687,7 +691,8 @@ class DICM_Child extends ET_Builder_Module {
 			$pcontainer_id,
 			$puseCloudImage,
 			$prespJSCloudRatio,
-			$preloadAnimationType
+			$preloadAnimationType,
+			$useInstagram
 		);
 
 		return ($useAlgoliaField === 'off' ? $html : $javascript);
