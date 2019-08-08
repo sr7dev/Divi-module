@@ -53,7 +53,10 @@ class DICM_Child extends ET_Builder_Module {
 				),
 			),
 		);
+
+		$this->main_css_element = '%%order_class%%.et_pb_promo';
 	}
+
 
 	/**
 	 * Module's specific fields
@@ -376,9 +379,24 @@ class DICM_Child extends ET_Builder_Module {
 	 */
 	function get_advanced_fields_config() {
 		return array(
-			'button' => array(
-				'button' => array(
-					'label' => esc_html__( 'Button', 'et_builder' ),
+			'background'     => false,
+			'borders'        => false,
+			'box_shadow'     => false,
+			'button'         => false,
+			'text'         	 => false,
+			'transform'      => false,
+			'filters'        => false,
+			'fonts'          => false,
+			'margin_padding' => false,
+			'max_width' => array(
+				'toggle_title'    => esc_html__( 'Width100', 'dicm_divi_custom_modules' ),
+				'css' => array(
+					'main'		  => ".deeds-tile",
+				),
+				'options' => array(
+					'max_width' => array(
+						'depends_show_if' => 'off',
+					),
 				),
 			),
 		);
