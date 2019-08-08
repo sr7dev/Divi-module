@@ -35,7 +35,6 @@ a, div, img, li, span, p, ul {
 }
 .deeds-tile
 {
-  max-width: 145px;
   display:flex;
   padding: 7px;
   box-shadow: 0 0 10px rgba(54, 54, 54, 0.35);
