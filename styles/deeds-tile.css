@@ -35,7 +35,6 @@ a, div, img, li, span, p, ul {
 }
 .deeds-tile
 {
-  max-width: 145px;
   display:flex;
   padding: 7px;
   box-shadow: 0 0 10px rgba(54, 54, 54, 0.35);
@@ -61,7 +60,7 @@ a, div, img, li, span, p, ul {
 }
 .deeds-tile-maintitle{
   margin-left: 5px;
-  width: calc(100% - 10px) !important;
+  width: calc(100% - 10px);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;  
@@ -137,18 +136,18 @@ button.simplefavorite-button
   display: none;
 }
 .profile-size{
-  width: 106px;
-  height: 100px;
+
 }
 
 img.ci-image {
   opacity: 1;
   display: block;
-  width: 100%;
-  padding: 0 !important;
-  height: 150px;
+  padding: 0;
+  width: auto;
+  height: auto;
+  margin: auto;
 } 
-* [BEGIN-ADD][STG:Bojana 7/2/2019] Preloading for cloud image item */
+/* [BEGIN-ADD][STG:Bojana 7/2/2019] Preloading for cloud image item */
 .spinner.rotateplane {
     background-color: #333;
 
@@ -224,7 +223,7 @@ img.ci-image {
     background-color: #333;
     height: 100%;
     width: 6px;
-    display: inline-block!important ;
+    display: inline-block;
 
     -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
     animation: sk-stretchdelay 1.2s infinite ease-in-out;
@@ -550,7 +549,7 @@ img.ci-image {
 .sk-cube-grid {
     width: 50%;
     height: 50%;
-    display: block !important;
+    display: block;
     position: absolute;
     left: 25%;
     top: 25%;
@@ -839,7 +838,7 @@ img.ci-image {
 .spinner:not(.rect) {
     width: 100%;
     height: 100%;
-    display: block !important;
+    display: block ;
     position: absolute;
     /*left: calc(50% - 16px);
     top: calc(50% - 25px);*/
