@@ -127,7 +127,6 @@ button.simplefavorite-button
 {
   padding:3px;
   border: 1px solid #ccc;
-  margin: auto;
   position: relative;
 }
 .deeds-tile-row-profile-img > *
@@ -152,6 +151,7 @@ img.ci-image {
   width: auto;
   height: auto;
   margin: auto;
+  max-height: 100%;
 } 
 /* [BEGIN-ADD][STG:Bojana 7/2/2019] Preloading for cloud image item */
 .spinner.rotateplane {

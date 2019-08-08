@@ -41,8 +41,23 @@ class DICM_Parent extends ET_Builder_Module {
 				),
 			),
 		);
-	}
 
+		$this->main_css_element = '%%order_class%%.deeds-tiles';
+	}
+	
+	public function get_custom_css_fields_config()
+	{
+		return array(
+			'promo_section_label' => array(
+				'label'    => esc_html__( 'Section Label', 'et_builder' ),
+				'selector' => '%%order_class%% .section-label .content',
+			),
+			'promo_tiles' => array(
+				'label'    => esc_html__( 'Tiles', 'et_builder' ),
+				'selector' => '%%order_class%% .deeds-tiles',
+			),
+		);
+	}
 	/**
 	 * Module's specific fields
 	 *
@@ -96,26 +111,26 @@ class DICM_Parent extends ET_Builder_Module {
 				'tab_slug'		  		=> 'general',
 			),
 			'instantsearch' => array(
-        'label'           => esc_html__( 'Instant Search', 'dicm_divi_custom_modules' ),
-        'type'            => 'text',
-        'option_category' => 'basic_option',
-        'description'     => esc_html__( 'Input variable name of instantsearch. ', 'dicm_divi_custom_modules' ),
-        'toggle_slug'     => 'algolia_setting',
-        'default'     		=> 'searchDiscover',
-        'tab_slug'		 	 	=> 'general',
-        'show_if'   			=> array( 'use_algolia' => 'on'),
-      ),
-      'container_id' => array(
-        'label'           => esc_html__( 'ID of Container', 'dicm_divi_custom_modules' ),
-        'type'            => 'text',
-        'option_category' => 'basic_option',
-        'description'     => esc_html__( 'Input id of container here.', 'dicm_divi_custom_modules' ),
-        'toggle_slug'     => 'algolia_setting',
-        'default'     		=> 'hits',
-        'tab_slug'		  	=> 'general',
-        'show_if'   			=> array( 'use_algolia' => 'on'),
-      ),
-      // Cloud image tab
+				'label'           => esc_html__( 'Instant Search', 'dicm_divi_custom_modules' ),
+				'type'            => 'text',
+				'option_category' => 'basic_option',
+				'description'     => esc_html__( 'Input variable name of instantsearch. ', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     => 'algolia_setting',
+				'default'     		=> 'searchDiscover',
+				'tab_slug'		 	 	=> 'general',
+				'show_if'   			=> array( 'use_algolia' => 'on'),
+			  ),
+			  'container_id' => array(
+				'label'           => esc_html__( 'ID of Container', 'dicm_divi_custom_modules' ),
+				'type'            => 'text',
+				'option_category' => 'basic_option',
+				'description'     => esc_html__( 'Input id of container here.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     => 'algolia_setting',
+				'default'     		=> 'hits',
+				'tab_slug'		  	=> 'general',
+				'show_if'   			=> array( 'use_algolia' => 'on'),
+			  ),
+			  // Cloud image tab
 			'use_resp_js_cloud_img' => array(
 				'label'           		=> esc_html__( 'Use Responsive JS Cloud Image', 'dicm_divi_custom_modules' ),
 				'type'            		=> 'yes_no_button',
@@ -157,11 +172,85 @@ class DICM_Parent extends ET_Builder_Module {
 				'description'     	=> esc_html__( 'Init again call delay.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'cloud_image',
 				'number_validation' => true,
-        'value_type'        => 'int',
-        'value_min'         => 0,
+				'value_type'        => 'int',
+				'value_min'         => 0,
 				'show_if'   				=> array( 'use_resp_js_cloud_img' => 'on'),
 			),
 
+		);
+	}
+
+	/**
+	 * Module's advanced fields configuration
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	function get_advanced_fields_config() {
+		return array(
+			'text'           => false,
+			'background'     => array(
+				'options' => array(
+					'background_color' => array(
+						'default'          => et_builder_accent_color(),
+					),
+				),
+				'css'		=> array (
+					'main' => '%%order_class%%',
+					),
+			),
+			'borders'        => array(
+				'default' => array(
+					'css'      => array(
+						'main' => array (
+							'border_radii' => '%%order_class%%',
+							'border_styles' => '%%order_class%%',
+						)
+					),
+					'defaults' => array(
+						'border_radii' => 'on|3px|3px|3px|3px',
+					),
+				),
+			),
+			'box_shadow'     => array(
+				'default' => array(
+					'css' => array(
+						'main' => '%%order_class%%',
+					),
+				),
+			),
+			'filters'        => array(
+				'child_filters_target' => array(
+					'tab_slug'    => 'advanced',
+					'toggle_slug' => 'image',
+				),
+				'css'                  => array(
+					'main' => '%%order_class%%',
+				),
+			),
+			'fonts'          => array(
+				'body' => array(
+					'css'          => array(
+						'main'      => "%%order_class%%",
+						'important' => 'all',
+					),
+					'label'        => esc_html__( 'Fonts', 'deeds-tiles' ),
+					'disable_toggle' => false,
+				),
+			),
+			'margin_padding' => array(
+				'css' => array(
+					'main' => "%%order_class%% .deeds-tiles",
+					'important' => 'all',
+				),
+			),
+			'max_width'      => array(
+				'css' => array(
+					'main' => "%%order_class%% .deeds-tiles",
+					'important' => 'all',
+				),
+			),
 		);
 	}
 
@@ -354,7 +443,7 @@ class DICM_Parent extends ET_Builder_Module {
 			';
 	}
 
-	function get_html() {
+	function get_html($module_class) {
 		wp_enqueue_style( 'tile-styles', plugins_url('/UniversalTileModule/styles/deeds-tile.css') );
 		wp_register_script( 'test-register', plugins_url('/UniversalTileModule/test.js'));
 		wp_enqueue_script( 'test-divi-module', plugins_url('/UniversalTileModule/test.js'), array('test-register'));
@@ -362,7 +451,7 @@ class DICM_Parent extends ET_Builder_Module {
 		wp_print_scripts( 'test-divi-module');
 		$container_id = $this->props['container_id'];
 
-		$html = ('<div id="'.$container_id.'" style="color:#000000 !important"></div>');
+		$html = ('<div id="'.$container_id.'" class="'. $module_class.'" style="color:#000000"></div>');
  
 		return $html;
 	}
@@ -410,7 +499,8 @@ class DICM_Parent extends ET_Builder_Module {
 		// Module specific props added on $this->get_fields()
 		$title = $this->props['title'];
 		$use_algolia = $this->props['use_algolia'];
-		
+		$module_class = $this->module_classname( $render_slug );
+
 		// Render module content
 		if ($use_algolia === 'off') {
 			return $output = sprintf(
@@ -447,7 +537,7 @@ class DICM_Parent extends ET_Builder_Module {
 				, $this->get_algolia_parentTile_endTag()
 				, $this->get_js_start()
 				, $this->get_js_end()
-				, $this->get_html()
+				, $this->get_html($module_class)
 			);
 
 			
