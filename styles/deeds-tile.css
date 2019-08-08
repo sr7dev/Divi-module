@@ -127,6 +127,7 @@ button.simplefavorite-button
 {
   padding:3px;
   border: 1px solid #ccc;
+  margin: auto;
   position: relative;
 }
 .deeds-tile-row-profile-img > *

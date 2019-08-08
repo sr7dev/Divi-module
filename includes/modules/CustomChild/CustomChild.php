@@ -54,10 +54,126 @@ class DICM_Child extends ET_Builder_Module {
 			),
 		);
 
-		$this->main_css_element = '%%order_class%%.deeds-tile  .deeds-tile-row-profile-img';
+		$this->main_css_element = '%%order_class%%.deeds-tile .deeds-tile-row-profile-img';
+
+		$this->custom_css_fields = array(
+			'promo_tile' => array(
+				'label'    => esc_html__( 'Tile', 'et_builder' ),
+				'selector' => '%%order_class%% .deeds-tile-row-profile-img',
+			),
+			'promo_profile' => array(
+					'label'    => esc_html__( 'Profile', 'et_builder' ),
+					'selector' => '%%order_class%% .deeds-tile-row-profile-img',
+			),
+			'promo_profile_ci_wrapper' => array(
+					'label'    => esc_html__( 'Wrapper of cloud image of Profile', 'et_builder' ),
+					'selector' => '%%order_class%% .deeds-tile-row-profile-img .ci-image-wrapper',
+			),
+			'promo_profile_img' => array(
+					'label'    => esc_html__( 'Image tag of Profile', 'et_builder' ),
+					'selector' => '%%order_class%% .deeds-tile-row-profile-img img',
+			),
+			'promo_information' => array(
+				'label'    => esc_html__( 'Information', 'et_builder' ),
+				'selector' => '%%order_class%% .deeds-tile-desc',
+			),
+			'promo_main_sub_title' => array(
+				'label'    => esc_html__( 'Main & Sub Title', 'et_builder' ),
+				'selector' => '%%order_class%% .deeds-tile-maintitle',
+			),
+			'promo_main_title' => array(
+				'label'    => esc_html__( 'Main Title', 'et_builder' ),
+				'selector' => '%%order_class%% .deeds-tile-maintitle h2',
+			),
+			'promo_sub_title' => array(
+					'label'    => esc_html__( 'Sub Title', 'et_builder' ),
+					'selector' => '%%order_class%%  .deeds-tile-maintitle h3',
+			),
+			'promo_extra_title' => array(
+					'label'    => esc_html__( 'Extra Title', 'et_builder' ),
+					'selector' => '%%order_class%% .tile-desc-info',
+			),
+			'promo_fav_button' => array(
+				'label'    => esc_html__( 'Favorite Button', 'et_builder' ),
+				'selector' => '%%order_class%% .simplefavorite-button',
+			),
+			'promo_fav_button_img' => array(
+				'label'    => esc_html__( 'Image of Favorite Button', 'et_builder' ),
+				'selector' => '%%order_class%% .simplefavorite-button img',
+			),
+			'promo_sport' => array(
+				'label'    => esc_html__( 'Sport DIV', 'et_builder' ),
+				'selector' => '%%order_class%% .tile-sport',
+				'no_space_before_selector' => true,
+			),
+			'promo_sport_img' => array(
+				'label'    => esc_html__( 'Sport Icon', 'et_builder' ),
+				'selector' => '%%order_class%% .tile-sport img',
+				'no_space_before_selector' => true,
+			),
+		);
+
 	}
 
-
+	public function get_custom_css_fields_config()
+	{
+		return array(
+			'promo_tile' => array(
+				'label'    => esc_html__( 'Tile', 'et_builder' ),
+				'selector' => '%%order_class%% .deeds-tile-row-profile-img',
+			),
+			'promo_profile' => array(
+					'label'    => esc_html__( 'Profile', 'et_builder' ),
+					'selector' => '%%order_class%% .deeds-tile-row-profile-img',
+			),
+			'promo_profile_ci_wrapper' => array(
+					'label'    => esc_html__( 'Wrapper of cloud image of Profile', 'et_builder' ),
+					'selector' => '%%order_class%% .deeds-tile-row-profile-img .ci-image-wrapper',
+			),
+			'promo_profile_img' => array(
+					'label'    => esc_html__( 'Image tag of Profile', 'et_builder' ),
+					'selector' => '%%order_class%% .deeds-tile-row-profile-img img',
+			),
+			'promo_information' => array(
+				'label'    => esc_html__( 'Information', 'et_builder' ),
+				'selector' => '%%order_class%% .deeds-tile-desc',
+			),
+			'promo_main_sub_title' => array(
+				'label'    => esc_html__( 'Main & Sub Title', 'et_builder' ),
+				'selector' => '%%order_class%% .deeds-tile-maintitle',
+			),
+			'promo_main_title' => array(
+				'label'    => esc_html__( 'Main Title', 'et_builder' ),
+				'selector' => '%%order_class%% .deeds-tile-maintitle h2',
+			),
+			'promo_sub_title' => array(
+					'label'    => esc_html__( 'Sub Title', 'et_builder' ),
+					'selector' => '%%order_class%%  .deeds-tile-maintitle h3',
+			),
+			'promo_extra_title' => array(
+					'label'    => esc_html__( 'Extra Title', 'et_builder' ),
+					'selector' => '%%order_class%% .tile-desc-info',
+			),
+			'promo_fav_button' => array(
+				'label'    => esc_html__( 'Favorite Button', 'et_builder' ),
+				'selector' => '%%order_class%% .simplefavorite-button',
+			),
+			'promo_fav_button_img' => array(
+				'label'    => esc_html__( 'Image of Favorite Button', 'et_builder' ),
+				'selector' => '%%order_class%% .simplefavorite-button img',
+			),
+			'promo_sport' => array(
+				'label'    => esc_html__( 'Sport DIV', 'et_builder' ),
+				'selector' => '%%order_class%% .tile-sport',
+				'no_space_before_selector' => true,
+			),
+			'promo_sport_img' => array(
+				'label'    => esc_html__( 'Sport Icon', 'et_builder' ),
+				'selector' => '%%order_class%% .tile-sport img',
+				'no_space_before_selector' => true,
+			),
+		);
+	}
 	/**
 	 * Module's specific fields
 	 *
@@ -365,7 +481,7 @@ class DICM_Child extends ET_Builder_Module {
 					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
 					'on' 		=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
 				),
-				'default'							=> 'on',
+				'default'				=> 'on',
 			),
 		);
 	}
@@ -401,7 +517,6 @@ class DICM_Child extends ET_Builder_Module {
 					'defaults' => array(
 						'border_radii' => 'on|3px|3px|3px|3px',
 					),
-					'label_prefix'	=> 'Tile',
 				),
 			),
 			'box_shadow'     => array(
@@ -426,7 +541,7 @@ class DICM_Child extends ET_Builder_Module {
 						'main'      => "%%order_class%%.deeds-tile h2",
 						'important' => 'all',
 					),
-					'label'        => esc_html__( 'Main Title', 'simp-simple' ),
+					'label'        => esc_html__( 'Main Title', 'deeds-tile' ),
 					'disable_toggle' => false,
 				),
 				'header3' => array(
@@ -434,7 +549,7 @@ class DICM_Child extends ET_Builder_Module {
 						'main'      => "%%order_class%%.deeds-tile h3",
 						'important' => 'all',
 					),
-					'label'        => esc_html__( 'Sub Title', 'simp-simple' ),
+					'label'        => esc_html__( 'Sub Title', 'deeds-tile' ),
 					'disable_toggle' => false,
 				),
 				'body' => array(
@@ -442,7 +557,7 @@ class DICM_Child extends ET_Builder_Module {
 						'main'      => "%%order_class%%.deeds-tile p",
 						'important' => 'all',
 					),
-					'label'        => esc_html__( 'Extra Title', 'simp-simple' ),
+					'label'        => esc_html__( 'Extra Title', 'deeds-tile' ),
 					'disable_toggle' => false,
 				),
 			),
@@ -453,7 +568,7 @@ class DICM_Child extends ET_Builder_Module {
 				),
 			),
 			'max_width'      => array(
-				'toggle_title'    => esc_html__( 'Profile Image Size', 'dicm_divi_custom_'),
+				'toggle_title'    => esc_html__( 'Profile Image Size', 'deeds-tile'),
 				'css' => array(
 					'main' => "%%order_class%%.deeds-tile .deeds-tile-row-profile-img",
 					'important' => 'all',
@@ -607,7 +722,7 @@ class DICM_Child extends ET_Builder_Module {
 								'</div>' +
 								'<div class=\"deeds-tile-maintitle " . $showMainTitleStyle . "\">' +
 									'<a href=\"' + link + '\">' +
-									'<<h2>' + ". $this->get_algolia_field($useSpecialMainTitle, $mainTitle, $specialMainTitle) . " + '</h2>' +
+									'<h2>' + ". $this->get_algolia_field($useSpecialMainTitle, $mainTitle, $specialMainTitle) . " + '</h2>' +
 									'<h3>' + ". $this->get_algolia_field($useSpecialSubTitle, $subTitle, $specialSubTitle) . " + '</h3>' +
 									'</a>' +
 								'</div>' +
