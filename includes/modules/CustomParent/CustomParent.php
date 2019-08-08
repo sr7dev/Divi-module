@@ -166,7 +166,7 @@ class DICM_Parent extends ET_Builder_Module {
 	}
 
 	function cloud_img_prefix()
-  {
+  	{
 	  if (function_exists ('get_cloud_img_prefix'))
 	  {
 
@@ -174,9 +174,9 @@ class DICM_Parent extends ET_Builder_Module {
 	  }
 	  return "";
 	
-  }
-  function cloud_img_gray_prefix()
-  {
+	}
+	function cloud_img_gray_prefix()
+	{
 	  if (function_exists ('get_cloud_img_gray_prefix'))
 	  {
 
@@ -184,17 +184,17 @@ class DICM_Parent extends ET_Builder_Module {
 	  }
 	  return "";
 	
-  }
-  function cloud_img_full_prefix($operation, $width, $height, $filter)
-  {
-	  if (function_exists ('get_cloud_img_prefix'))
-	  {
+	}
+	function cloud_img_full_prefix($operation, $width, $height, $filter)
+	{
+		if (function_exists ('get_cloud_img_prefix'))
+		{
 
-		  return get_cloud_img_prefix($operation, $width, $height, $filter);
-	  }
-	  return "";
-	
-  }
+			return get_cloud_img_prefix($operation, $width, $height, $filter);
+		}
+		return "";
+		
+	}
 
 	function get_section_label_html() {
 		$sectionLabel_style = 'section-label';
@@ -275,6 +275,8 @@ class DICM_Parent extends ET_Builder_Module {
 					return cloud_img_pre + \"_deeds_\" + org_url;
 				}
 			}
+			
+			
 			console.log('Tiles module loading');
 			document.addEventListener('DOMContentLoaded', function(event) 
 			{
@@ -323,7 +325,6 @@ class DICM_Parent extends ET_Builder_Module {
 					console.log('End1');
 				}
 			});
-			console.log('End2');
 		";
 	}
 
@@ -365,20 +366,34 @@ class DICM_Parent extends ET_Builder_Module {
  
 		return $html;
 	}
-	function remove_first_last_lines($text)
-	{
-		$childCount = substr_count($text, '<child-js-start-mark>');
-		$childString = '';
-		$childsString = '';
-		for( $i = 0; $i < $childCount; $i++ ) {
-			$startPos = strpos($text, '<child-js-start-mark>') + strlen('<child-js-start-mark>');
-			$endPos = strpos($text, '</child-js-end-mark>');
-			$childString = substr($text, $startPos, $endPos-$startPos);
-			$text = substr($text, $endPos);
-			$childsString .= $childString;
+
+	function getContents($str, $startDelimiter, $endDelimiter) {
+		$contents = array();
+		$startDelimiterLength = strlen($startDelimiter);
+		$endDelimiterLength = strlen($endDelimiter);
+		$startFrom = $contentStart = $contentEnd = 0;
+		while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
+		  $contentStart += $startDelimiterLength;
+		  $contentEnd = strpos($str, $endDelimiter, $contentStart);
+		  if (false === $contentEnd) {
+			break;
+		  }
+		  $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
+		  $startFrom = $contentEnd + $endDelimiterLength;
 		}
+	  
+		return $contents;
+	}
+	  
+	
+	function strip_invalid_tags($org_text)
+	{
+		$start_symbol = '{CHILD_JS_START}';
+		$end_symbol = '{CHILD_JS_END}';
+		$text = $org_text;
 		
-		return $childsString;
+		$codes = $this->getContents($text, $start_symbol, $end_symbol);
+		return implode($codes, "\n");
 	}
 	/**
 	 * Render module output
@@ -427,12 +442,14 @@ class DICM_Parent extends ET_Builder_Module {
 				'
 				, $this->get_algolia_section_label_html()
 				, $this->get_algolia_parentTile_openTag()
-				, $this->remove_first_last_lines($this->content)
+				, $this->strip_invalid_tags($this->content)
 				, $this->get_algolia_parentTile_endTag()
 				, $this->get_js_start()
 				, $this->get_js_end()
 				, $this->get_html()
 			);
+
+			
 		}
 		// Render wrapper
 		// 3rd party module with no full VB support has to wrap its render output with $this->_render_module_wrapper().

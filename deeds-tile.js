@@ -198,3 +198,40 @@ function get_blue_sport_img(sport) {
 	sport = sport ? sport.split(" ")[0].toLowerCase() : "";
 	return (sport && sport_img[sport] ? sport_img[sport] : "/wp-content/uploads/2019/05/sport-blue-footer.svg");
 }
+
+/* [END-ADD][STG:Bojana 6/9/2019]*/
+function lastWordCapitalized(url) {
+	if ( !url || typeof url === "undefined") {
+		return "";
+	}
+	return url.replace(/^.*\/([^?#\/]+).*$/, function (_, word) {
+		var word = decodeURI(word);
+		return word.charAt(0).toUpperCase() + word.slice(1);
+	});
+}
+
+function run_instagram_profile_url(name, indexName, ObjectID, use_responsive_cloudimg_js)
+{
+	console.log("Runing instagram");
+	callAjax(
+		'https://www.instagram.com/' + name,
+		function (data) {
+			var tmpstr = data.split('"ProfilePage":[{"logging_page_id":"profilePage_')[1];
+			usr_id = tmpstr.substr(0, tmpstr.indexOf('"')); 
+			jQuery.getJSON("https://i.instagram.com/api/v1/users/"+usr_id+"/info/", function(info) {
+			path = info.user.hd_profile_pic_url_info["url"];
+			if (path)
+			{
+				console.log(path);
+				
+				document.getElementById(name).setAttribute( use_responsive_cloudimg_js ? "ci-src" : "src", path);
+				document.getElementById(name).classList.remove("empty_img");
+				/*[BEGIN-ADD][STG:Bojana 6/21/2019] Update empty profile_img url with instagram photo url*/					
+				update_profile_img(indexName, ObjectID, path);
+				/*[END-ADD][STG:Bojana 6/21/2019] Update empty profile_img url with instagram photo url*/					
+			}
+			return path;
+		}
+	)
+	});
+}
