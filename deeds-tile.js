@@ -235,3 +235,26 @@ function run_instagram_profile_url(name, indexName, ObjectID, use_responsive_clo
 	)
 	});
 }
+
+function get_hit_image(hit, useSpecImg, specImgSrc, profileImgSrc){
+	if (!useSpecImg)
+		return profileImgSrc;
+	var hit_img = "";
+	switch(specImgSrc.toLowerCase())
+	{
+		case "youtube_thumbnail":
+			hit_img = 'http://i.ytimg.com/vi/' + get_youtube_id(hit.url)  + '/hqdefault.jpg';
+			break;
+		case "youtube_video":
+			hit_img = hit.brand_img;
+			break;
+		case "media_profile":
+			hit_img = hit.gear_img;
+			break;
+		default:
+			hit_img = hit.profile_img;
+			break;
+			
+	}
+	return hit_img;
+}

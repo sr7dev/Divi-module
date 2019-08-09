@@ -716,7 +716,7 @@ class DICM_Child extends ET_Builder_Module {
 				var is_fav = hit.favorite_users && (hit.favorite_users.indexOf(user_id) >=0 )? 1 : 0;
 				var favor_img_html = get_favbutton_html_by_instant2(user_id, " .$instantSearch. ", hit.objectID, is_fav);
 				var sport_img = get_blue_sport_img(get_hit_sport(hit));
-				var hit_img = '" .$useSpecProfileImg. "' === 'off' ? hit.".$profile_img_src.": hit." .$specProfileImg. ";
+				var hit_img = get_hit_image(hit, '".$useSpecProfileImg. "', '" .$specProfileImg. "', '" .$profile_img_src."');
 				var hit_empty_img = '".$emptyImage."';
 				var link = ".( $link ? "hit.".$link : "''" ).";
 				var first_name = '';
