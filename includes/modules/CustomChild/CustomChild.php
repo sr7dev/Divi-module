@@ -264,8 +264,8 @@ class DICM_Child extends ET_Builder_Module {
 					'first_name'  => esc_html__( 'First Name', 'et_builder' ),
 					'last_name' 	=> esc_html__( 'Last Name', 'et_builder'),
 					'event_date' 	=> esc_html__( 'Event Date', 'et_builder' ),
-        ),	
-        'description'     	=> esc_html__( 'Input special sub title.', 'dicm_divi_custom_modules' ),
+				),	
+				'description'     	=> esc_html__( 'Input special sub title.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
 				'default'						=> 'last_name',
 				'show_if'   				=> array(
@@ -312,6 +312,18 @@ class DICM_Child extends ET_Builder_Module {
 							'use_special_extra_info' => 'on'
 				),
 			),
+			'use_spec_profile_img' => array(
+				'label'           	=> esc_html__( 'Use Special Profile Image', 'dicm_divi_custom_modules' ),
+				'type'            	=> 'yes_no_button',
+				'option_category' 	=> 'configuration',
+				'description'     	=> esc_html__( 'Special Profile Image will use or not.', 'dicm_divi_custom_modules' ),
+				'options'         	=> array(
+					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
+					'on' 	=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
+				),
+				'toggle_slug'     	=> 'input_information',
+				'default'						=> 'off',
+			),
 			'img_src' => array(
 				'label'           	=> esc_html__( 'Picture Source', 'dicm_divi_custom_modules' ),
 				'type'            	=> 'text',
@@ -319,6 +331,26 @@ class DICM_Child extends ET_Builder_Module {
 				'description'     	=> esc_html__( 'Input image source.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
 				'default'			=> 'profile_img',
+				'show_if'   				=> array(
+					'use_spec_profile_img' => 'off'
+				),
+			),
+			'spec_img_src' => array(
+				'label'           	=> esc_html__( 'Special Profile Image', 'dicm_divi_custom_modules' ),
+				'type'              => 'select',
+				'option_category'   => 'layout',
+				'options'           => array(
+					'youtube_thumbnail'	=> esc_html__( 'Youtube Thumbnail', 'et_builder' ),
+					'youtube_video'		=> esc_html__( 'Youtube Video', 'et_builder'),
+					'media_profile'		=> esc_html__( 'Media Profile', 'et_builder' ),
+				),	
+				'description'     	=> esc_html__( 'Input special extra info.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'input_information',
+				'default'			=> 'youtube_thumbnail',
+				'show_if'   				=> array(
+					'use_algolia_field' 	=> 'on',
+					'use_spec_profile_img' 	=> 'on'
+				),
 			),
 			'empty_img' => array(
 				'label'           	=> esc_html__( 'Empty Image', 'dicm_divi_custom_modules' ),
@@ -663,7 +695,9 @@ class DICM_Child extends ET_Builder_Module {
 		$useSpecialextraInfo,
 		$extraInfo,
 		$specialextraInfo, 
+		$useSpecProfileImg,
 		$profile_img_src,
+		$specProfileImg,
 		$emptyImage, 
 		$instantSearch,
 		$container_id,
@@ -682,7 +716,7 @@ class DICM_Child extends ET_Builder_Module {
 				var is_fav = hit.favorite_users && (hit.favorite_users.indexOf(user_id) >=0 )? 1 : 0;
 				var favor_img_html = get_favbutton_html_by_instant2(user_id, " .$instantSearch. ", hit.objectID, is_fav);
 				var sport_img = get_blue_sport_img(get_hit_sport(hit));
-				var hit_img = hit.".$profile_img_src.";
+				var hit_img = '" .$useSpecProfileImg. "' === 'off' ? hit.".$profile_img_src.": hit." .$specProfileImg. ";
 				var hit_empty_img = '".$emptyImage."';
 				var link = ".( $link ? "hit.".$link : "''" ).";
 				var first_name = '';
@@ -770,7 +804,9 @@ class DICM_Child extends ET_Builder_Module {
 		$subTitle = $this->props['sub_title'];
 		$extraInfo = $this->props['extra_info'];
 		$useAlgoliaField = $puseAlgolia;
+		$useSpecProfileImg = $this->props['use_spec_profile_img'];
 		$profile_img_src = $this->props['img_src'];
+		$specProfileImg = $this->props['spec_img_src'];
 		$emptyImage = $this->props['empty_img'];
 		$link = $this->props['link'];
 		$useSpecialMainTitle = $this->props['use_special_main_title'];
@@ -865,7 +901,9 @@ class DICM_Child extends ET_Builder_Module {
 			$useSpecialextraInfo,
 			$extraInfo,
 			$specialextraInfo,
+			$useSpecProfileImg,
 			$profile_img_src,
+			$specProfileImg,
 			$emptyImage, 
 			$pinstantSearch,
 			$pcontainer_id,
