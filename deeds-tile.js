@@ -236,11 +236,9 @@ function run_instagram_profile_url(name, indexName, ObjectID, use_responsive_clo
 	});
 }
 
-function get_hit_image(hit, useSpecImg, specImgSrc, profileImgSrc){
-	if (!useSpecImg)
-		return profileImgSrc;
+function get_hit_image(hit, specImgSrc) {
 	var hit_img = "";
-	switch(specImgSrc.toLowerCase())
+	switch(specImgSrc)
 	{
 		case "youtube_thumbnail":
 			hit_img = 'http://i.ytimg.com/vi/' + get_youtube_id(hit.url)  + '/hqdefault.jpg';
