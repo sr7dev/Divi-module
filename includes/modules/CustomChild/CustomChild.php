@@ -312,11 +312,11 @@ class DICM_Child extends ET_Builder_Module {
 							'use_special_extra_info' => 'on'
 				),
 			),
-			'use_spec_profile_img' => array(
-				'label'           	=> esc_html__( 'Use Special Profile Image', 'dicm_divi_custom_modules' ),
+			'use_media_data' => array(
+				'label'           	=> esc_html__( 'Use Media Data', 'dicm_divi_custom_modules' ),
 				'type'            	=> 'yes_no_button',
 				'option_category' 	=> 'configuration',
-				'description'     	=> esc_html__( 'Special Profile Image will use or not.', 'dicm_divi_custom_modules' ),
+				'description'     	=> esc_html__( 'Media Data will be used or not.', 'dicm_divi_custom_modules' ),
 				'options'         	=> array(
 					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
 					'on' 	=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
@@ -332,7 +332,7 @@ class DICM_Child extends ET_Builder_Module {
 				'toggle_slug'     	=> 'input_information',
 				'default'			=> 'profile_img',
 				'show_if'   				=> array(
-					'use_spec_profile_img' => 'off'
+					'use_media_data' => 'off'
 				),
 			),
 			'spec_img_src' => array(
@@ -342,14 +342,31 @@ class DICM_Child extends ET_Builder_Module {
 				'options'           => array(
 					'youtube_thumbnail'	=> esc_html__( 'Youtube Thumbnail', 'et_builder' ),
 					'youtube_video'		=> esc_html__( 'Youtube Video', 'et_builder'),
-					'media_profile'		=> esc_html__( 'Media Profile', 'et_builder' ),
 				),	
-				'description'     	=> esc_html__( 'Input special extra info.', 'dicm_divi_custom_modules' ),
+				'description'     	=> esc_html__( 'Input special image info.', 'dicm_divi_custom_modules' ),
 				'toggle_slug'     	=> 'input_information',
 				'default'			=> 'youtube_thumbnail',
 				'show_if'   				=> array(
 					'use_algolia_field' 	=> 'on',
-					'use_spec_profile_img' 	=> 'on'
+					'use_media_data' 	=> 'on'
+				),
+			),
+			'auto_play_youtube' => array(
+				'label'           	=> esc_html__( 'Youtube Auto Play', 'dicm_divi_custom_modules' ),
+				'type'              => 'select',
+				'option_category'   => 'layout',
+				'options'           => array(
+					'auto_play_youtube_disable'	=> esc_html__( 'Disable', 'et_builder' ),
+					'auto_play_youtube_first'	=> esc_html__( 'First Youtube Auto Play', 'et_builder'),
+					'auto_play_youtube_all'		=> esc_html__( 'All Youtube Auto Play', 'et_builder' ),
+				),	
+				'description'     	=> esc_html__( 'Youtube auto play info.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'input_information',
+				'default'			=> 'auto_play_youtube_disable',
+				'show_if'   				=> array(
+					'use_algolia_field' 	=> 'on',
+					'use_media_data' 		=> 'on',
+					'spec_img_src'			=> 'youtube_video',
 				),
 			),
 			'empty_img' => array(
@@ -695,7 +712,7 @@ class DICM_Child extends ET_Builder_Module {
 		$useSpecialextraInfo,
 		$extraInfo,
 		$specialextraInfo, 
-		$useSpecProfileImg,
+		$useMediaData,
 		$profile_img_src,
 		$specProfileImg,
 		$emptyImage, 
@@ -704,7 +721,8 @@ class DICM_Child extends ET_Builder_Module {
 		$useCloudImage,
 		$respJSCloudRatio,
 		$preload_type,
-		$useInstagram) {
+		$useInstagram,
+		$autoPlay) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
 		
@@ -723,12 +741,12 @@ class DICM_Child extends ET_Builder_Module {
 				var event_date = '';
 				var hit_img = '';
 
-				if ('".$useSpecProfileImg."' === 'on') {
+				if ('".$useMediaData."' === 'on') {
 					hit_img = get_hit_image(hit, '" .$specProfileImg. "');
 				} else {
 					hit_img = hit.".$profile_img_src.";
 				}
-				
+
 				if ( hit.post_title ) {
 					var lastIndex = hit.post_title.lastIndexOf(' ');
 					first_name = hit.post_title.substring(0, lastIndex);
@@ -810,7 +828,7 @@ class DICM_Child extends ET_Builder_Module {
 		$subTitle = $this->props['sub_title'];
 		$extraInfo = $this->props['extra_info'];
 		$useAlgoliaField = $puseAlgolia;
-		$useSpecProfileImg = $this->props['use_spec_profile_img'];
+		$useMediaData = $this->props['use_media_data'];
 		$profile_img_src = $this->props['img_src'];
 		$specProfileImg = $this->props['spec_img_src'];
 		$emptyImage = $this->props['empty_img'];
@@ -821,6 +839,7 @@ class DICM_Child extends ET_Builder_Module {
 		$specialSubTitle = $this->props['special_sub_title'];
 		$useSpecialextraInfo = $this->props['use_special_extra_info'];
 		$specialextraInfo = $this->props['special_extra_info'];
+		$autoPlay = $this->props->props['auto_play_youtube'];
 		
 		// show information
 		$showFavoriteIcon = $this->props['show_fav_icon'];
@@ -907,7 +926,7 @@ class DICM_Child extends ET_Builder_Module {
 			$useSpecialextraInfo,
 			$extraInfo,
 			$specialextraInfo,
-			$useSpecProfileImg,
+			$useMediaData,
 			$profile_img_src,
 			$specProfileImg,
 			$emptyImage, 
@@ -916,7 +935,8 @@ class DICM_Child extends ET_Builder_Module {
 			$puseCloudImage,
 			$prespJSCloudRatio,
 			$preloadAnimationType,
-			$useInstagram
+			$useInstagram,
+			$autoPlay
 		);
 
 		return ($useAlgoliaField === 'off' ? $html : $javascript);
