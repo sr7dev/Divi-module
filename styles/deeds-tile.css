@@ -129,6 +129,9 @@ button.simplefavorite-button
   border: 1px solid #ccc;
   position: relative;
 }
+.deeds-tile-row-profile-img.video a {
+    height: 100%;
+}
 .deeds-tile-row-profile-img > *
 {
     max-width: 100%;
@@ -856,3 +859,75 @@ img.ci-image {
     top: calc(50% - 9px);
 }
 /* [END-ADD][STG:Bojana 7/2/2019] Preloading for cloud image item */
+
+/* [BEGIN-ADD][STG:Bojana 06/29/2019] style for lazyload youtube*/
+.lazyyoutube.wrapper .youtube {
+    background-color: #000;
+    overflow: hidden;
+    cursor: pointer;
+    height:150px;
+    display:flex;
+    min-height: 100%;
+    position: relative;
+}
+#hits_media_topvideo .lazyyoutube.wrapper .youtube
+{
+    height: calc(30vh - 2em);
+}
+.lazyyoutube.wrapper .youtube img {
+    width: 100%;
+    top: -28px;
+    left: 0;
+    opacity: 0.7;
+    height:206px;
+}
+#hits_media_topvideo .lazyyoutube.wrapper .youtube img
+{
+    top: 0;
+    height: calc(30vh - 2em);
+}
+.lazyyoutube.wrapper .youtube .play-button {
+    width: 90px;
+    height: 60px;
+    background-color: #333;
+    box-shadow: 0 0 30px rgba( 0,0,0,0.6 );
+    z-index: 1;
+    opacity: 0.8;
+    border-radius: 6px;
+}
+.lazyyoutube.wrapper .youtube .play-button:before {
+    content: "";
+    border-style: solid;
+    border-width: 15px 0 15px 26.0px;
+    border-color: transparent transparent transparent #fff;
+}
+.lazyyoutube.wrapper .youtube img,
+.lazyyoutube.wrapper .youtube .play-button {
+    cursor: pointer;
+}
+.lazyyoutube.wrapper .youtube img,
+.lazyyoutube.wrapper .youtube iframe,
+.lazyyoutube.wrapper .youtube .play-button,
+.lazyyoutube.wrapper .youtube .play-button:before {
+    position: absolute;
+}
+.lazyyoutube.wrapper .youtube .play-button,
+.lazyyoutube.wrapper .youtube .play-button:before {
+    top: 50%;
+    left: 50%;
+    transform: translate3d( -50%, -50%, 0 );
+}
+.lazyyoutube.wrapper .youtube iframe {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+.lazyyoutube.wrapper .youtube:hover .play-button {
+    background: red;
+    opacity: 1;
+}
+html body .flex-container .flex-item .flex-photo-row .lazyyoutube.wrapper img {
+    padding: 0px !important;
+}
+/* [END-ADD][STG:Bojana 06/29/2019] style for lazyload youtube*/

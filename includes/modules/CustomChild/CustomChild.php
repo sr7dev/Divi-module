@@ -369,6 +369,23 @@ class DICM_Child extends ET_Builder_Module {
 					'spec_img_src'			=> 'youtube_video',
 				),
 			),
+			'lazy_youtube_video' => array(
+				'label'           	=> esc_html__( 'Lazyload Youtube Video', 'dicm_divi_custom_modules' ),
+				'type'              => 'yes_no_button',
+				'option_category'   => 'layout',
+				'options'           => array(
+					'off'  	=> esc_html__( 'Off', 'dicm_divi_custom_modules' ),
+					'on' 	=> esc_html__( 'On', 'dicm_divi_custom_modules' ),
+				),	
+				'description'     	=> esc_html__( 'Youtube video lazyload info.', 'dicm_divi_custom_modules' ),
+				'toggle_slug'     	=> 'input_information',
+				'default'			=> 'on',
+				'show_if'   				=> array(
+					'use_algolia_field' 	=> 'on',
+					'use_media_data' 		=> 'on',
+					'spec_img_src'			=> 'youtube_video',
+				),
+			),
 			'empty_img' => array(
 				'label'           	=> esc_html__( 'Empty Image', 'dicm_divi_custom_modules' ),
 				'type'            	=> 'text',
@@ -722,7 +739,8 @@ class DICM_Child extends ET_Builder_Module {
 		$respJSCloudRatio,
 		$preload_type,
 		$useInstagram,
-		$autoPlay) {
+		$autoPlay,
+		$lazyLoadVideo) {
 		global $cloudimg_using, $cloudimg_url_prefix, $cloudimg_operation, $cloudimg_token, $cloudimg_width, $cloudimg_height, $cloudimg_filter;
 		$respInitDelay = $this->props['resp_init_again_call_delay'];
 		
@@ -740,7 +758,8 @@ class DICM_Child extends ET_Builder_Module {
 				var last_name = '';
 				var event_date = '';
 				var hit_img = '';
-
+				var is_video = false;
+				
 				if ('".$useMediaData."' === 'on') {
 					hit_img = get_hit_image(hit, '" .$specProfileImg. "');
 				} else {
@@ -762,15 +781,23 @@ class DICM_Child extends ET_Builder_Module {
 				{
 					hit_empty_img = sport_img;
 				}
-				var hit_img_html = get_hit_img_html(
-					hit,
-					hit_img,
-					hit_empty_img,
-					'".$preload_type."',
-					'".($useCloudImage == "on" ? "1" : "0")."',
-					'".($respJSCloudRatio ? $respJSCloudRatio : "") ."',
-					instagram_uername);
-				
+
+				var hit_img_html = '';
+				if ('" .$useMediaData. "' === 'on' && hit.post_type_label.toLowerCase().indexOf('highlight') > -1 && '" .$specProfileImg. "' === 'youtube_video' )
+				{
+					console.log('set video');
+					hit_img_html = get_media_playlist_html(hit, hit_img, '" .$autoPlay. "', '" .$lazyLoadVideo. "');
+					is_video = true;
+				} else {
+					hit_img_html = get_hit_img_html(
+						hit,
+						hit_img,
+						hit_empty_img,
+						'".$preload_type."',
+						'".($useCloudImage == "on" ? "1" : "0")."',
+						'".($respJSCloudRatio ? $respJSCloudRatio : "") ."',
+						instagram_uername);
+				}
 				\$hits.push(
 					'<div class=\"deeds-tile " . $module_class. ' '. $entireInfoPos . ' ' . $sizeType . ' ' . $showSportIconStyle . "\">' +
 						'<div class=\"deeds-tile-desc " . $extraInfoPos . "\">' +
@@ -798,7 +825,7 @@ class DICM_Child extends ET_Builder_Module {
 								'</div>' +
 							'</div>' +
 						'</div>' +
-						'<div class=\"deeds-tile-row-profile-img\">' +
+						'<div class=\"deeds-tile-row-profile-img ' + (is_video ? 'video' : '' ) + '\">' +
 							'<a href=\"' + link + '\" class=\"deeds-tile-row\">' +
 								hit_img_html +
 							'</a>' +
@@ -839,7 +866,8 @@ class DICM_Child extends ET_Builder_Module {
 		$specialSubTitle = $this->props['special_sub_title'];
 		$useSpecialextraInfo = $this->props['use_special_extra_info'];
 		$specialextraInfo = $this->props['special_extra_info'];
-		$autoPlay = $this->props->props['auto_play_youtube'];
+		$autoPlay = $this->props['auto_play_youtube'];
+		$lazyLoadVideo = $this->props['lazy_youtube_video'];
 		
 		// show information
 		$showFavoriteIcon = $this->props['show_fav_icon'];
@@ -936,7 +964,8 @@ class DICM_Child extends ET_Builder_Module {
 			$prespJSCloudRatio,
 			$preloadAnimationType,
 			$useInstagram,
-			$autoPlay
+			$autoPlay,
+			$lazyLoadVideo
 		);
 
 		return ($useAlgoliaField === 'off' ? $html : $javascript);

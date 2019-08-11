@@ -405,6 +405,7 @@ class DICM_Parent extends ET_Builder_Module {
 	{
 		$container_id = $this->props['container_id'];
 		$instantSearch = $this->props['instantsearch'];
+		$useCloudImage = $this->props['use_resp_js_cloud_img'];
 		return $javascript = "
 					if (is_empty) {
 						document.getElementById('". $container_id . "').innerHTML = 'No result found.';
@@ -412,6 +413,7 @@ class DICM_Parent extends ET_Builder_Module {
 						document.getElementById('". $container_id ."').innerHTML = \$hits.join('');
 					}
 					console.log('End1');
+					lazyload_youtube_init('".$useCloudImage."');
 				}
 			});
 		";
